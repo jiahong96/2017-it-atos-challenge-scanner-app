@@ -1,5 +1,6 @@
 package com.example.user.preconsumerapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +24,12 @@ import java.net.URLEncoder;
 import static com.example.user.preconsumerapp.R.id.spinner;
 
 public class Transaction extends AppCompatActivity {
-    String link1, link2, link3, link4,batchID,movement;
+    //string for nxt link
+    String link1, link2, link3, link4;
+
+    //string for QR scanning result
+    String batchID,movement,productName;
+
     JsonObjectRequest postRequest;
     JSONObject responseData = null;
     RequestQueue queue;
@@ -41,6 +47,18 @@ public class Transaction extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
+
+        // Get the Intent that started this activity and extract the string
+        Intent intent = getIntent();
+        try {
+            responseData = new JSONObject(intent.getStringExtra("jsonObjInString"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        nxtAccNum = intent.getStringExtra("nxtAccNum");
+        productName = intent.getStringExtra("productName");
+        batchID = intent.getStringExtra("batchID");
+        movement = intent.getStringExtra("movement");
 
         btnPost = (Button) findViewById(R.id.button);
         btnPost.setOnClickListener(new View.OnClickListener() {
@@ -66,26 +84,26 @@ public class Transaction extends AppCompatActivity {
                     Log.d("Response and Acc: ", "Not Null");
                     try {
                         //first post data
-                        //toPost1.put("batchID", batchID);
-                        //toPost1.put("movement", movement);
+                        toPost1.put("batchID", batchID);
+                        toPost1.put("movement", movement);
                         toPost1.put("unhashedData", responseData.getString("unhashedData"));
                         link1 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
                                 URLEncoder.encode(toPost1.toString()) + nxtPostLinkPart4;
 
                         //second post data
-                        //toPost2.put("batchID", batchID);
+                        toPost2.put("batchID", batchID);
                         toPost2.put("encryptedHash1", responseData.getString("encryptedHash1"));
                         link2 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
                                 URLEncoder.encode(toPost2.toString()) + nxtPostLinkPart4;
 
                         //third post data
-                        //toPost3.put("batchID", batchID);
+                        toPost3.put("batchID", batchID);
                         toPost3.put("encryptedHash1", responseData.getString("encryptedHash2"));
                         link3 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
                                 URLEncoder.encode(toPost3.toString()) + nxtPostLinkPart4;
 
                         //fourth post data
-                        //toPost4.put("batchID", batchID);
+                        toPost4.put("batchID", batchID);
                         toPost4.put("encryptedHash1", responseData.getString("encryptedHash3"));
                         link4 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
                                 URLEncoder.encode(toPost4.toString()) + nxtPostLinkPart4;

@@ -10,8 +10,6 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -20,10 +18,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -35,25 +31,14 @@ import com.android.volley.toolbox.Volley;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.security.PublicKey;
 
 public class MainActivity extends AppCompatActivity {
 
     RequestQueue queue;
     JSONObject responseData = null;
-    String encryptedHash1, encryptedHash2, encryptedHash3, original, batchID, productName;
+    String batchID, productName;
     String nxtAccNum ="NXT-2N9Y-MQ6D-WAAS-G88VH";
     Spinner spinner;
     ConnectivityManager connectivityManager;
@@ -139,23 +124,23 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         updateConnectedFlags();
 
-            if(refreshDisplay==false){
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Connect to site's wifi or quit")
-                        .setCancelable(false)
-                        .setPositiveButton("Connect to WIFI", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-                            }
-                        })
-                        .setNegativeButton("Quit", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                MainActivity.this.finish();
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
+        if(refreshDisplay==false){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Connect to site's wifi or quit")
+                    .setCancelable(false)
+                    .setPositiveButton("Connect to WIFI", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                        }
+                    })
+                    .setNegativeButton("Quit", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            MainActivity.this.finish();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
     }
 
     @Override
@@ -172,8 +157,12 @@ public class MainActivity extends AppCompatActivity {
                     nxtAccNum = qrData.getString("nxtAccNum");
                     batchID = qrData.getString("batchID");        // format of qr data
                     productName = qrData.getString("productName");
-
-                    //batchIDv.setText(nxtAccNum + batchID + productName);
+                    Intent intent = new Intent(this, Transaction.class);
+                    intent.putExtra("jsonObjInString",responseData.toString());
+                    intent.putExtra("nxtAccNum",nxtAccNum);
+                    intent.putExtra("batchID",batchID);
+                    intent.putExtra("productName",productName);
+                    intent.putExtra("movement",spinner.getSelectedItem().toString().toLowerCase());
                 } else {
                     Toast.makeText(getApplicationContext(), "Not a Valid FoodChain™ QR , please try again", Toast.LENGTH_LONG).show();
                 }
@@ -232,21 +221,9 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     //get json Object
                     responseData = response;
-		
-                    //get strings from json
-                    encryptedHash1 = response.getString("encryptedHash1");
-                    encryptedHash2 = response.getString("encryptedHash2");
-                    encryptedHash3 = response.getString("encryptedHash3");
-                    original = response.getString("unhashedData");
-                    Log.d("Str1", response.getString("encryptedHash1"));
-                    Log.d("Str2", response.getString("encryptedHash2"));
-                    Log.d("Str3", response.getString("encryptedHash3"));
-                    Log.d("Original Json", response.getString("unhashedData"));
+                    Log.d("Response: ", responseData.toString());
 
-                    JSONObject jsonObj = new JSONObject(response.getString("unhashedData"));
-		    Toast.makeText(MainActivity.this, "Received response from server", Toast.LENGTH_LONG).show();
-                    //locationCode.setText("Location Code: " +jsonObj.getString("location"));
-                    //dateTime.setText("DateTime: " +jsonObj.getString("currentDateTime"));
+                    Toast.makeText(MainActivity.this, "Received response from server", Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(MainActivity.this, R.string.connection_error, Toast.LENGTH_SHORT).show();
