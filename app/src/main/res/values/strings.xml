@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">PreConsumerApp</string>
+    <string name="wifi_connected">WIFI is connected</string>
+    <string name="lost_connection">Please connect to WIFI network</string>
+    <string name="connection_error">Server error occured</string>
+    <string-array name="action_array">
+        <item>In</item>
+        <item>Out</item>
+
+    </string-array>
+</resources>

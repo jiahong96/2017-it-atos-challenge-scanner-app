@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\.gradle\caches\modules-2\files-2.1\com.mcxiaoke.volley\library\1.0.19\a8f23f65fc1e522ee4a1a697ee569901a46741fa\library-1.0.19.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="a8f23f65fc1e522ee4a1a697ee569901a46741fa">
+        <dex dex="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\transforms\dex\debug\folders\1000\10\library-1.0.19_faa931a5e9b768aeef342d5052e434a178e5239d\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\.gradle\caches\modules-2\files-2.1\commons-codec\commons-codec\1.8\af3be3f74d25fc5163b54f56a0d394b462dafafd\commons-codec-1.8.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="af3be3f74d25fc5163b54f56a0d394b462dafafd">
+        <dex dex="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\transforms\dex\debug\folders\1000\10\commons-codec-1.8_1da8aa19133404c97d5015e4ac4d2be2538a7947\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="7bde4c34162092e0a77e7f12dc85ed77c484cf5c">
+        <dex dex="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-media-compat-25.1.1_27ed8743229284bb45b4fbeb90f21580ae1c21f3\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="0d191c1a09e4892d059e5ce749e4ad4e08129e35">
+        <dex dex="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-25.1.1_f9f68e8ef1c10f2a4ad1c84c347eefe6bea34f52\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="0565d51b061dd88171f4dc92b4a262f9d81912ad">
+        <dex dex="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_5ab956ed5bb8added413f6fcf22ccf5630da4450\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="c03bf57f358aa10d253f21989e93bcf6014b3b17">
+        <dex dex="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-25.1.1_a21ff8998a5a48a2b2115dbd4aabf2c885a5e551\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\.gradle\caches\modules-2\files-2.1\org.bouncycastle\bcprov-jdk16\1.46\ce091790943599535cbb4de8ede84535b0c1260c\bcprov-jdk16-1.46.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="ce091790943599535cbb4de8ede84535b0c1260c">
+        <dex dex="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\transforms\dex\debug\folders\1000\10\bcprov-jdk16-1.46_8e69fef0978e58477d586e51a8358be3efeedee2\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="d298e74c420cd2fa3d508234d45164598cfd9b0d">
+        <dex dex="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_7519e4b8c6f5e133a277398cd69727a0a34cb204\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="0fb891e8f0cfba0513043a7bb357513d229ca2cd">
+        <dex dex="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-utils-25.1.1_28ace9bd5a0d2c6cf26c4d2f7f7642f9a33fb0fe\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\.gradle\caches\modules-2\files-2.1\com.google.zxing\android-integration\3.3.0\e0f3e0def130c30c1fab6f891cf52fb01cc8522b\android-integration-3.3.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="e0f3e0def130c30c1fab6f891cf52fb01cc8522b">
+        <dex dex="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\transforms\dex\debug\folders\1000\10\android-integration-3.3.0_a2ac29f4556fc7f6f6bef8e1e89558f97fa3e1ac\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-25.1.1_da0f67b904374a07d39d7911cf33d00324640ad2\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="e2719c102dca3a7a5b02ce07f769362da6ddb4ab">
+        <dex dex="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-fragment-25.1.1_1759871bd78a6199f9df40872d969b363552f68b\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.1.1\support-annotations-25.1.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="b59b6ee8d6ecc03e672d253800430343493a6ed8">
+        <dex dex="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-25.1.1_4930ddc546c8ee6b8e2d4c57fa60f170a069b1c5\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="02741d05d4b697fba5e279e9881aaa1da0ca7c7f">
+        <dex dex="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-compat-25.1.1_c32389bb472196d2452a3e94d83e3af731321f9e\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="ecb496cc08dd52551fc5ec6db3bc0632e95a89bb">
+        <dex dex="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-25.1.1_91041bc3e4fe638b64477d612edbf6f3466edcf4\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="3e04ac8ca644ea7baddf6fdcf72e15c79e9df94a">
+        <dex dex="C:\Users\CheahHong\Desktop\Atos\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-ui-25.1.1_d4c286b671997289eaf449a5a11e45354a02bcad\classes.dex" />
+    </item>
+
+</items>
