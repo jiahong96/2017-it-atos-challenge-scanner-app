@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean refreshDisplay;
 
     //Local Server IP
-    private static final String getInfoUrl = "http://192.168.43.61:7080/";
+    private static final String getInfoUrl = "http://192.168.0.105:7080/";
 
     //Request external storage
     private static final int REQUEST_EXTERNAL_STORAGE = 1;

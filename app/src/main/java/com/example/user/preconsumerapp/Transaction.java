@@ -15,6 +15,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,6 +50,8 @@ public class Transaction extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
+
+        queue= Volley.newRequestQueue(this);
 
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
@@ -121,11 +124,10 @@ public class Transaction extends AppCompatActivity {
     }
 
     public void firstPost(String urlString) {
-
         try {
             URL url = new URL(urlString);  // convert string to proper url
             Log.d("url", url.toString());
-            postRequest = new JsonObjectRequest(Request.Method.POST, urlString, (String) null,
+            postRequest = new JsonObjectRequest(Request.Method.POST, url.toString(), (String) null,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
@@ -245,7 +247,7 @@ public class Transaction extends AppCompatActivity {
                                 Log.d("Response", response.toString(4));
                                 Log.d("response", response.toString());
 
-                                AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Transaction.this);
                                 builder.setMessage("Succcessfully sent to blockchain")
                                         .setCancelable(false)
                                         .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
