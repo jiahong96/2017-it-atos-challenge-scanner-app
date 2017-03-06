@@ -1,4 +1,4 @@
-﻿package com.example.user.preconsumerapp;
+package com.example.user.preconsumerapp;
 
 import android.Manifest;
 import android.app.Activity;
@@ -37,14 +37,19 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
 
     RequestQueue queue;
-    JSONObject responseData = null;
     String batchID, productName;
     String nxtAccNum ="NXT-2N9Y-MQ6D-WAAS-G88VH";
     Spinner spinner;
     ConnectivityManager connectivityManager;
     NetworkInfo activeNetworkInfo;
     ImageView imgScan;
-    int errorCounter = 0;
+    int errorCounter;
+
+    public static JSONObject responseData = null;
+    public static AlertDialog ConnectionAlert;
+
+    // Whether the display should be refreshed.
+    public static boolean refreshDisplay;
 
     //Local Server IP
     private static final String getInfoUrl = "http://192.168.43.61:7080/";
@@ -59,11 +64,8 @@ public class MainActivity extends AppCompatActivity {
     // The BroadcastReceiver that tracks network connectivity changes.
     private NetworkReceiver receiver = new NetworkReceiver();
 
-    // Whether the display should be refreshed.
-    public static boolean refreshDisplay;
-
     // Whether there is a Wi-Fi connection.
-    private static boolean wifiConnected = false;
+    private static boolean wifiConnected;
 
     private ProgressDialog pDialog;
 
@@ -97,15 +99,20 @@ public class MainActivity extends AppCompatActivity {
 
         //if no response data from server, send Get Request
         if(responseData==null && wifiConnected == true) {
+            errorCounter=0;
             getLocalInfoFromServer();
-            Log.d("ss","ss");
         }
 
         imgScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
-                integrator.initiateScan(); // intent to open external qr app
+                if(responseData!=null){
+                    IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
+                    integrator.initiateScan(); // intent to open external qr app
+                }else{
+                    errorCounter=0;
+                    getLocalInfoFromServer();
+                }
             }
         });
     }
@@ -124,22 +131,30 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         updateConnectedFlags();
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Connect to site's wifi to proceed")
+                .setCancelable(false)
+                .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                    }
+                })
+                .setNegativeButton("Quit", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        MainActivity.this.finish();
+                    }
+                });
+        ConnectionAlert = builder.create();
+        ConnectionAlert.setCanceledOnTouchOutside(false);
+
         if(refreshDisplay==false){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Connect to site's wifi or quit")
-                    .setCancelable(false)
-                    .setPositiveButton("Connect to WIFI", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-                        }
-                    })
-                    .setNegativeButton("Quit", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            MainActivity.this.finish();
-                        }
-                    });
-            AlertDialog alert = builder.create();
-            alert.show();
+            ConnectionAlert.show();
+        }else{
+            //if no response data from server, send Get Request
+            if(responseData==null) {
+                errorCounter=0;
+                getLocalInfoFromServer();
+            }
         }
     }
 
@@ -163,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("batchID",batchID);
                     intent.putExtra("productName",productName);
                     intent.putExtra("movement",spinner.getSelectedItem().toString().toLowerCase());
+                    startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), "Not a Valid FoodChain™ QR , please try again", Toast.LENGTH_LONG).show();
                 }
@@ -178,11 +194,11 @@ public class MainActivity extends AppCompatActivity {
     // variables accordingly.
     public void updateConnectedFlags() {
         if (isNetworkAvailable()) {
-            refreshDisplay = true;
             wifiConnected = true;
+            refreshDisplay = true;
         } else {
-            refreshDisplay = false;
             wifiConnected = false;
+            refreshDisplay = false;
         }
     }
 
@@ -190,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
         connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting() && activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected() && activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI;
     }
 
     public static void verifyStoragePermissions(Activity activity) { // for marshmallow permissions
@@ -212,6 +228,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Showing progress dialog before making http request
         pDialog.setMessage("Getting response from server...");
+        pDialog.setCanceledOnTouchOutside(false);
+        pDialog.setCancelable(false);
         pDialog.show();
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, getInfoUrl, (String) null, new Response.Listener<JSONObject>() {
@@ -222,23 +240,21 @@ public class MainActivity extends AppCompatActivity {
                     //get json Object
                     responseData = response;
                     Log.d("Response: ", responseData.toString());
-
-                    Toast.makeText(MainActivity.this, "Received response from server", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Received response from server", Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(MainActivity.this, R.string.connection_error, Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                pDialog.dismiss();
                 Log.d("VolleyError: ", error.toString());
                 if(errorCounter <=5){
-                    Toast.makeText(MainActivity.this, R.string.connection_error, Toast.LENGTH_SHORT).show();
                     getLocalInfoFromServer();
                     errorCounter ++;
                 }else{
+                    pDialog.dismiss();
+                    Toast.makeText(MainActivity.this, R.string.server_error, Toast.LENGTH_SHORT).show();
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     builder.setMessage("Please check your server connection and restart app")
                             .setCancelable(false)
@@ -248,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
                     AlertDialog alert = builder.create();
+                    alert.setCanceledOnTouchOutside(false);
                     alert.show();
                 }
 

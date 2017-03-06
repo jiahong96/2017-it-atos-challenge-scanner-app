@@ -1,6 +1,8 @@
 package com.example.user.preconsumerapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -243,7 +245,17 @@ public class Transaction extends AppCompatActivity {
                                 Log.d("Response", response.toString(4));
                                 Log.d("response", response.toString());
 
-                                Toast.makeText(getApplicationContext(), "Successfully posted", Toast.LENGTH_LONG).show();
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+                                builder.setMessage("Succcessfully sent to blockchain")
+                                        .setCancelable(false)
+                                        .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                finish();
+                                            }
+                                        });
+                                AlertDialog alert = builder.create();
+                                alert.setCanceledOnTouchOutside(false);
+                                alert.show();
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -255,6 +267,7 @@ public class Transaction extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             // error
+                            Toast.makeText(getApplicationContext(), "Please try again", Toast.LENGTH_LONG).show();
                             Log.d("Error.PostResponse", error.toString());
                         }
                     }
