@@ -3,147 +3,147 @@
 
     <item
         is-multidex="true"
-        jar="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jar="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
-        sha1="d0dd4aa7a4423f243c42efbf3964e8792cede4c1">
-        <dex dex="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_0f6333730e56450bb899446e734cc0b9405909fb\classes.dex" />
+        sha1="69c44bf7f1e1c46cd2da10ad6888e31b76afc319">
+        <dex dex="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_6baed7827a8f830116ebd9dde110a0283c3bdb4f\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\lesgo\.gradle\caches\modules-2\files-2.1\com.mcxiaoke.volley\library\1.0.19\a8f23f65fc1e522ee4a1a697ee569901a46741fa\library-1.0.19.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="a8f23f65fc1e522ee4a1a697ee569901a46741fa">
-        <dex dex="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\library-1.0.19_16531abe6665721e6f219a20e67259064afca922\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.1.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="7bde4c34162092e0a77e7f12dc85ed77c484cf5c">
-        <dex dex="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-media-compat-25.1.1_0fbbf43b676b912c15ad0eaa51fdc9c6b595f8be\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.1.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="3e04ac8ca644ea7baddf6fdcf72e15c79e9df94a">
-        <dex dex="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-ui-25.1.1_ce08736c6e6a8324ce98718de4a0ff95b745a06b\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\lesgo\.gradle\caches\modules-2\files-2.1\com.google.zxing\android-integration\3.3.0\e0f3e0def130c30c1fab6f891cf52fb01cc8522b\android-integration-3.3.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="e0f3e0def130c30c1fab6f891cf52fb01cc8522b">
-        <dex dex="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\android-integration-3.3.0_4b479291c59c3ee1deb00789f7f3f83363d3927d\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="H:\sdk\extras\android\m2repository\com\android\support\support-annotations\25.1.1\support-annotations-25.1.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="b59b6ee8d6ecc03e672d253800430343493a6ed8">
-        <dex dex="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-25.1.1_2acad3091b1e81e32929ee2358cada70378b04a4\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.1.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="e2719c102dca3a7a5b02ce07f769362da6ddb4ab">
-        <dex dex="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-fragment-25.1.1_482fd048ee139510490305e3dec4e7ea26d97832\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\lesgo\.gradle\caches\modules-2\files-2.1\org.bouncycastle\bcprov-jdk16\1.46\ce091790943599535cbb4de8ede84535b0c1260c\bcprov-jdk16-1.46.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="ce091790943599535cbb4de8ede84535b0c1260c">
-        <dex dex="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\bcprov-jdk16-1.46_09996a1ea443454366d2f959429da6ef9d23f192\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.1.1\jars\classes.jar"
+        jar="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.1.1\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
         sha1="0d191c1a09e4892d059e5ce749e4ad4e08129e35">
-        <dex dex="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-25.1.1_af8176a27419e3aa173bfecbcedfd46e43337160\classes.dex" />
+        <dex dex="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-25.1.1_3869dedb350554e2799655968458a10d6dce1aeb\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.1.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="ecb496cc08dd52551fc5ec6db3bc0632e95a89bb">
-        <dex dex="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-25.1.1_287a3f499da8f572c754562a466ae37a75e7fecc\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.1.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="c03bf57f358aa10d253f21989e93bcf6014b3b17">
-        <dex dex="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-25.1.1_db96a0c557a4bd4f8655d2f09a538345369db481\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\lesgo\.gradle\caches\modules-2\files-2.1\commons-codec\commons-codec\1.8\af3be3f74d25fc5163b54f56a0d394b462dafafd\commons-codec-1.8.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="af3be3f74d25fc5163b54f56a0d394b462dafafd">
-        <dex dex="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\commons-codec-1.8_3fb360dc8c0ee30c3b047b904190e4b5e159e564\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.1.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="02741d05d4b697fba5e279e9881aaa1da0ca7c7f">
-        <dex dex="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-compat-25.1.1_a0b9fc212cc738f87a15b53696988c6d2ec00610\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.1.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-25.1.1_e6a555db0b330bab2cfdb45a89c6e5ee3cce403f\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.1.1\jars\classes.jar"
+        jar="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.1.1\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
         sha1="0fb891e8f0cfba0513043a7bb357513d229ca2cd">
-        <dex dex="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-utils-25.1.1_98cb300e84170211caff6c63f06047a12b3c95c7\classes.dex" />
+        <dex dex="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-utils-25.1.1_198f4cf4eeaeca94f6f4154edbd3630fb77cff7c\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jar="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.1.1\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
-        sha1="7d1ad158e455721f4d37f5f0b1b3d99a23608fee">
-        <dex dex="C:\Users\lesgo\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_1f5396eec5853b0f83fbe897b5c3cc84ca6279f9\classes.dex" />
+        sha1="7bde4c34162092e0a77e7f12dc85ed77c484cf5c">
+        <dex dex="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-media-compat-25.1.1_d7f78a004b436ceb0615e379265fea6467a53082\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="e2719c102dca3a7a5b02ce07f769362da6ddb4ab">
+        <dex dex="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-fragment-25.1.1_0709ce50f101447da5d98436ef8f50276698fbac\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="02741d05d4b697fba5e279e9881aaa1da0ca7c7f">
+        <dex dex="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-compat-25.1.1_3d21b08ace3097ba62e8b558b2852da81e0285d6\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-25.1.1_faf1f26d2db75a0f493f8f47e31b593bca1b7447\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\.gradle\caches\modules-2\files-2.1\com.mcxiaoke.volley\library\1.0.19\a8f23f65fc1e522ee4a1a697ee569901a46741fa\library-1.0.19.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="a8f23f65fc1e522ee4a1a697ee569901a46741fa">
+        <dex dex="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\library-1.0.19_faa931a5e9b768aeef342d5052e434a178e5239d\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\.gradle\caches\modules-2\files-2.1\commons-codec\commons-codec\1.8\af3be3f74d25fc5163b54f56a0d394b462dafafd\commons-codec-1.8.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="af3be3f74d25fc5163b54f56a0d394b462dafafd">
+        <dex dex="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\commons-codec-1.8_1da8aa19133404c97d5015e4ac4d2be2538a7947\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="ecb496cc08dd52551fc5ec6db3bc0632e95a89bb">
+        <dex dex="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-25.1.1_4ec3165be95317241ad5fd811b063bc765952876\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="3e04ac8ca644ea7baddf6fdcf72e15c79e9df94a">
+        <dex dex="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-ui-25.1.1_ce113178dc515e7cc858ef0d8dd160fcae52c53e\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\.gradle\caches\modules-2\files-2.1\org.bouncycastle\bcprov-jdk16\1.46\ce091790943599535cbb4de8ede84535b0c1260c\bcprov-jdk16-1.46.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="ce091790943599535cbb4de8ede84535b0c1260c">
+        <dex dex="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\bcprov-jdk16-1.46_8e69fef0978e58477d586e51a8358be3efeedee2\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\.gradle\caches\modules-2\files-2.1\com.google.zxing\android-integration\3.3.0\e0f3e0def130c30c1fab6f891cf52fb01cc8522b\android-integration-3.3.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="e0f3e0def130c30c1fab6f891cf52fb01cc8522b">
+        <dex dex="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\android-integration-3.3.0_a2ac29f4556fc7f6f6bef8e1e89558f97fa3e1ac\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="4dc8a11aeded6209a53815c289c75de3b18ef23a">
+        <dex dex="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_3687ea4041bd63497074e39aff474abbdeb05ce2\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="c03bf57f358aa10d253f21989e93bcf6014b3b17">
+        <dex dex="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-25.1.1_0974316090a4f38087af86a70011c0cf1637807d\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\CheahHong\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.1.1\support-annotations-25.1.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="b59b6ee8d6ecc03e672d253800430343493a6ed8">
+        <dex dex="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-25.1.1_4930ddc546c8ee6b8e2d4c57fa60f170a069b1c5\classes.dex" />
     </item>
 
 </items>

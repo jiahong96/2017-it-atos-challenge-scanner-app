@@ -1,7 +1,11 @@
 package com.example.user.preconsumerapp;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,9 +28,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import static com.example.user.preconsumerapp.MainActivity.ConnectionAlert;
 import static com.example.user.preconsumerapp.R.id.spinner;
 
 public class Transaction extends AppCompatActivity {
+    ConnectivityManager connectivityManager;
+    NetworkInfo activeNetworkInfo;
+
     //string for nxt link
     String link1, link2, link3, link4;
 
@@ -37,6 +45,8 @@ public class Transaction extends AppCompatActivity {
     JSONObject responseData = null;
     RequestQueue queue;
     Button btnPost;
+
+    public static AlertDialog PostConnectionAlert;
 
     //nxt url parts
     String nxtAccNum ="NXT-2N9Y-MQ6D-WAAS-G88VH";
@@ -148,6 +158,26 @@ public class Transaction extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             // error
+                            if(!isNetworkAvailable()){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Transaction.this);
+                                builder.setMessage("Connect network to proceed")
+                                        .setCancelable(false)
+                                        .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                            }
+                                        })
+                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+
+                                            }
+                                        });
+                                ConnectionAlert = builder.create();
+                                ConnectionAlert.setCanceledOnTouchOutside(false);
+                                ConnectionAlert.show();
+                            }else{
+                                Toast.makeText(getApplicationContext(), "Server error occured, please try again", Toast.LENGTH_LONG).show();
+                            }
                             Log.d("Error.PostResponse", error.toString());
                         }
                     }
@@ -185,7 +215,26 @@ public class Transaction extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             // error
-                            Log.d("Error.PostResponse", error.toString());
+                            if(!isNetworkAvailable()){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Transaction.this);
+                                builder.setMessage("Connect network to proceed")
+                                        .setCancelable(false)
+                                        .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                            }
+                                        })
+                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+
+                                            }
+                                        });
+                                ConnectionAlert = builder.create();
+                                ConnectionAlert.setCanceledOnTouchOutside(false);
+                                ConnectionAlert.show();
+                            }else{
+                                Toast.makeText(getApplicationContext(), "Server error occured, please try again", Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
             );
@@ -221,6 +270,26 @@ public class Transaction extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             // error
+                            if(!isNetworkAvailable()){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Transaction.this);
+                                builder.setMessage("Connect network to proceed")
+                                        .setCancelable(false)
+                                        .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                            }
+                                        })
+                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+
+                                            }
+                                        });
+                                ConnectionAlert = builder.create();
+                                ConnectionAlert.setCanceledOnTouchOutside(false);
+                                ConnectionAlert.show();
+                            }else{
+                                Toast.makeText(getApplicationContext(), "Server error occured, please try again", Toast.LENGTH_LONG).show();
+                            }
                             Log.d("Error.PostResponse", error.toString());
                         }
                     }
@@ -252,12 +321,13 @@ public class Transaction extends AppCompatActivity {
                                         .setCancelable(false)
                                         .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
-                                                finish();
+                                                Intent intent = new Intent(Transaction.this, MainActivity.class);
+                                                startActivity(intent);
                                             }
                                         });
-                                AlertDialog alert = builder.create();
-                                alert.setCanceledOnTouchOutside(false);
-                                alert.show();
+                                ConnectionAlert = builder.create();
+                                ConnectionAlert.setCanceledOnTouchOutside(false);
+                                ConnectionAlert.show();
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -269,7 +339,26 @@ public class Transaction extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             // error
-                            Toast.makeText(getApplicationContext(), "Please try again", Toast.LENGTH_LONG).show();
+                            if(!isNetworkAvailable()){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Transaction.this);
+                                builder.setMessage("Connect WIFI to proceed")
+                                        .setCancelable(false)
+                                        .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                            }
+                                        })
+                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+
+                                            }
+                                        });
+                                ConnectionAlert = builder.create();
+                                ConnectionAlert.setCanceledOnTouchOutside(false);
+                                ConnectionAlert.show();
+                            }else{
+                                Toast.makeText(getApplicationContext(), "Server error occured, please try again", Toast.LENGTH_LONG).show();
+                            }
                             Log.d("Error.PostResponse", error.toString());
                         }
                     }
@@ -280,5 +369,12 @@ public class Transaction extends AppCompatActivity {
         }
 
         queue.add(postRequest);
+    }
+
+    private boolean isNetworkAvailable() {
+        connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected() && activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI;
     }
 }

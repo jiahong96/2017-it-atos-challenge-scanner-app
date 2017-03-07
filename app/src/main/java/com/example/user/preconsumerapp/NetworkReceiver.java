@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import static com.example.user.preconsumerapp.MainActivity.ConnectionAlert;
 import static com.example.user.preconsumerapp.MainActivity.refreshDisplay;
+import static com.example.user.preconsumerapp.Transaction.PostConnectionAlert;
 
 /**
  * Created by CheahHong on 3/4/2017.
@@ -33,12 +34,11 @@ public class NetworkReceiver extends BroadcastReceiver {
             if(ConnectionAlert.isShowing()){
                 ConnectionAlert.dismiss();
             }
-            Toast.makeText(context, R.string.wifi_connected, Toast.LENGTH_SHORT).show();
-
+            // Toast.makeText(context, R.string.wifi_connected, Toast.LENGTH_SHORT).show();
             // Otherwise, the app can't download content--because the pref setting is WIFI, and there
             // is no Wi-Fi connection.
             // Sets refreshDisplay to false.
-        } else {
+        }  else{
             refreshDisplay = false;
             Toast.makeText(context, R.string.lost_connection, Toast.LENGTH_SHORT).show();
         }

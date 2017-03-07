@@ -31,6 +31,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -45,14 +46,14 @@ public class MainActivity extends AppCompatActivity {
     ImageView imgScan;
     int errorCounter;
 
-    public static JSONObject responseData = null;
+    public static JSONObject responseData;
     public static AlertDialog ConnectionAlert;
 
     // Whether the display should be refreshed.
     public static boolean refreshDisplay;
 
     //Local Server IP
-    private static final String getInfoUrl = "http://192.168.0.105:7080/";
+    private static final String getInfoUrl = "http://192.168.0.7:7080/";
 
     //Request external storage
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -74,8 +75,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //check initial state of network connection
-        updateConnectedFlags();
+        responseData = null;
 
         // Registers BroadcastReceiver to track network connection changes.
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
@@ -97,19 +97,13 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        //if no response data from server, send Get Request
-        if(responseData==null && wifiConnected == true) {
-            errorCounter=0;
-            getLocalInfoFromServer();
-        }
-
         imgScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(responseData!=null){
                     IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
                     integrator.initiateScan(); // intent to open external qr app
-                }else{
+                }else if(responseData==null && isNetworkAvailable()){
                     errorCounter=0;
                     getLocalInfoFromServer();
                 }
@@ -147,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         ConnectionAlert = builder.create();
         ConnectionAlert.setCanceledOnTouchOutside(false);
 
-        if(refreshDisplay==false){
+        if(refreshDisplay==false && wifiConnected==false && responseData ==null){
             ConnectionAlert.show();
         }else{
             //if no response data from server, send Get Request
@@ -249,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("VolleyError: ", error.toString());
+
                 if(errorCounter <=5){
                     getLocalInfoFromServer();
                     errorCounter ++;

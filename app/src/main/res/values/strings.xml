@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">PreConsumerApp</string>
     <string name="wifi_connected">WIFI is connected</string>
+    <string name="data_connected">Mobile Data is connected</string>
     <string name="lost_connection">No WIFI connection</string>
     <string name="server_error">Server error occured</string>
     <string name="no_response">No response from server yet</string>
