@@ -7,15 +7,18 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
-import static com.example.user.preconsumerapp.MainActivity.ConnectionAlert;
 import static com.example.user.preconsumerapp.MainActivity.refreshDisplay;
-import static com.example.user.preconsumerapp.Transaction.PostConnectionAlert;
+import static com.example.user.preconsumerapp.MainActivity.PostConnectionAlert;
 
 /**
  * Created by CheahHong on 3/4/2017.
  */
 
 public class NetworkReceiver extends BroadcastReceiver {
+    MainActivity main = null;
+    void setMainActivityHandler(MainActivity main){
+        this.main=main;
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -31,8 +34,10 @@ public class NetworkReceiver extends BroadcastReceiver {
             // to true. This causes the display to be refreshed when the user
             // returns to the app.
             refreshDisplay = true;
-            if(ConnectionAlert.isShowing()){
-                ConnectionAlert.dismiss();
+            if(PostConnectionAlert!=null){
+                if(PostConnectionAlert.isShowing()){
+                    PostConnectionAlert.dismiss();
+                }
             }
             // Toast.makeText(context, R.string.wifi_connected, Toast.LENGTH_SHORT).show();
             // Otherwise, the app can't download content--because the pref setting is WIFI, and there
@@ -40,7 +45,7 @@ public class NetworkReceiver extends BroadcastReceiver {
             // Sets refreshDisplay to false.
         }  else{
             refreshDisplay = false;
-            Toast.makeText(context, R.string.lost_connection, Toast.LENGTH_SHORT).show();
+            Toast.makeText(main.getApplicationContext(), R.string.lost_connection, Toast.LENGTH_SHORT).show();
         }
     }
 }
