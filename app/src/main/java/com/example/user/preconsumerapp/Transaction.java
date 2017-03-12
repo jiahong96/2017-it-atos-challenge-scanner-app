@@ -325,13 +325,13 @@ public class Transaction extends AppCompatActivity {
 
                         //third post data
                         toPost3.put("batchID", batchID);
-                        toPost3.put("encryptedHash1", responseData.getString("encryptedHash2"));
+                        toPost3.put("encryptedHash2", responseData.getString("encryptedHash2"));
                         link3 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
                                 URLEncoder.encode(toPost3.toString()) + nxtPostLinkPart4;
 
                         //fourth post data
                         toPost4.put("batchID", batchID);
-                        toPost4.put("encryptedHash1", responseData.getString("encryptedHash3"));
+                        toPost4.put("encryptedHash3", responseData.getString("encryptedHash3"));
                         link4 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
                                 URLEncoder.encode(toPost4.toString()) + nxtPostLinkPart4;
 
