@@ -9,6 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/skyblue"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context="com.example.user.preconsumerapp.Transaction">
 
@@ -17,26 +18,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#212121"
-        android:textSize="20sp"
+        android:textSize="50sp"
+        android:textStyle="italic"
+        android:typeface="serif"
         android:id="@+id/productName" />
 
     <TextView
-        android:text="Batch"
+        android:text="BatchID:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#212121"
+        android:typeface="serif"
         android:layout_marginTop="2dp"
         android:textSize="20sp"
         android:id="@+id/batchID" />
-
-    <TextView
-        android:text="Movement"
-        android:layout_width="wrap_content"
-        android:textColor="#212121"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:textSize="20sp"
-        android:id="@+id/movement" />
 
     <Button
         android:text="Send To BlockChain"

@@ -3,10 +3,12 @@ package com.example.user.preconsumerapp;
 import android.Manifest;
 import android.app.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -26,16 +28,12 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    String batchID, productName;
-    String nxtAccNum ="NXT-2N9Y-MQ6D-WAAS-G88VH";
-    Spinner spinner;
+    String batchID, productName,nxtAccNum;
+    boolean doubleBackToExitPressedOnce = false;
     ImageView imgScan;
 
     public static AlertDialog ConnectionAlert=null;
     public static AlertDialog PostConnectionAlert=null;
-
-    // Whether the display should be refreshed.
-    public static boolean refreshDisplay;
 
     //Request external storage
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -47,10 +45,14 @@ public class MainActivity extends AppCompatActivity {
     // The BroadcastReceiver that tracks network connectivity changes.
     private NetworkReceiver receiver = new NetworkReceiver();
 
+    private ProgressDialog pDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        pDialog = new ProgressDialog(this);
 
         // Register BroadcastReceiver to track network connection changes.
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
@@ -61,14 +63,6 @@ public class MainActivity extends AppCompatActivity {
         verifyStoragePermissions(MainActivity.this);
 
         imgScan = (ImageView) findViewById(R.id.scanIcon);
-        imgScan.setImageResource(R.drawable.scan);
-
-        spinner = (Spinner) findViewById(R.id.spinner);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.action_array, R.layout.support_simple_spinner_dropdown_item);
-        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
         imgScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,22 +72,42 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //double click back to exit
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }
+
     //broadcast receiver on start
     @Override
     public void onStart () {
         super.onStart();
     }
 
-    //unregister broadcast receiver
+    //unregister BroadcastReceiver when app is destroyed.
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // Unregisters BroadcastReceiver when app is destroyed.
         if (receiver != null) {
             this.unregisterReceiver(receiver);
         }
     }
 
+    //Scanner on result
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -103,19 +117,19 @@ public class MainActivity extends AppCompatActivity {
             try {
                 JSONObject qrData = new JSONObject(scanResult.getContents());
 
+                //standardized QR data format
                 if (qrData.has("nxtAccNum") && qrData.has("batchID") && qrData.has("productName")) {
-                    Toast.makeText(getApplicationContext(), "Valid FoodChain™ QR detected", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Valid FoodChain™ QR detected", Toast.LENGTH_LONG).show();
                     nxtAccNum = qrData.getString("nxtAccNum");
-                    batchID = qrData.getString("batchID");        // format of qr data
+                    batchID = qrData.getString("batchID");
                     productName = qrData.getString("productName");
                     Intent intent = new Intent(this, Transaction.class);
                     intent.putExtra("nxtAccNum",nxtAccNum);
                     intent.putExtra("batchID",batchID);
                     intent.putExtra("productName",productName);
-                    intent.putExtra("movement",spinner.getSelectedItem().toString().toLowerCase());
                     startActivity(intent);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Not a Valid FoodChain™ QR , please try again", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Not a Valid FoodChain™ QR , please try again", Toast.LENGTH_LONG).show();
                 }
 
             } catch (Exception e) {
@@ -125,7 +139,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static void verifyStoragePermissions(Activity activity) { // for marshmallow permissions
+    // check for marshmallow permissions
+    public static void verifyStoragePermissions(Activity activity) {
         // Check if we have write permission
         int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 

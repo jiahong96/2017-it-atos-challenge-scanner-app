@@ -7,7 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
-import static com.example.user.preconsumerapp.MainActivity.refreshDisplay;
 import static com.example.user.preconsumerapp.MainActivity.PostConnectionAlert;
 
 /**
@@ -26,26 +25,19 @@ public class NetworkReceiver extends BroadcastReceiver {
                 context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = conn.getActiveNetworkInfo();
 
-        // Checks the user prefs and the network connection. Based on the result, decides whether
-        // to refresh the display or keep the current display.
         // Userpref is Wi-Fi only, checks to see if the device has a Wi-Fi connection.
         if (networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-            // If device has its Wi-Fi connection, sets refreshDisplay
-            // to true. This causes the display to be refreshed when the user
-            // returns to the app.
-            refreshDisplay = true;
+            // If device has its Wi-Fi connection, close
+            // the connection alert dialog
             if(PostConnectionAlert!=null){
                 if(PostConnectionAlert.isShowing()){
                     PostConnectionAlert.dismiss();
                 }
             }
-            // Toast.makeText(context, R.string.wifi_connected, Toast.LENGTH_SHORT).show();
             // Otherwise, the app can't download content--because the pref setting is WIFI, and there
             // is no Wi-Fi connection.
-            // Sets refreshDisplay to false.
         }  else{
-            refreshDisplay = false;
-            Toast.makeText(main.getApplicationContext(), R.string.lost_connection, Toast.LENGTH_SHORT).show();
+            Toast.makeText(main, R.string.lost_connection, Toast.LENGTH_SHORT).show();
         }
     }
 }

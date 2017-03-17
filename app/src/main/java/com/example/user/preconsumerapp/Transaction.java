@@ -42,7 +42,7 @@ public class Transaction extends AppCompatActivity {
     String link1, link2, link3, link4;
 
     //string for QR scanning result
-    String batchID,movement,productName;
+    String batchID,productName,nxtAccNum;
 
     int errorCounter;
 
@@ -50,14 +50,14 @@ public class Transaction extends AppCompatActivity {
     JSONObject toPost2 = null;
     JSONObject toPost3 = null;
     JSONObject toPost4 = null;
-    JsonObjectRequest postRequest;
     JSONObject responseData = null;
+    JsonObjectRequest postRequest;
     RequestQueue queue;
+
     Button btnPost;
-    TextView tvProduct,tvBatch, tvMovement;
+    TextView tvProduct,tvBatch;
 
     //nxt url parts
-    String nxtAccNum ="NXT-2N9Y-MQ6D-WAAS-G88VH";
     String secretPhrase = "appear morning crap became fire liquid probably tease rare swear shut grief";
     private static final String nxtPostLinkPart1 = "http://174.140.168.136:6876/nxt?requestType=sendMessage&secretPhrase=";
     private static final String nxtPostLinkPart2 = "&recipient=";
@@ -65,7 +65,7 @@ public class Transaction extends AppCompatActivity {
     private static final String nxtPostLinkPart4 = "&deadline=60&feeNQT=0";
 
     //Local Server IP
-    private static final String getInfoUrl = "http://192.168.0.11:7080/";
+    private static final String getInfoUrl = "http://192.168.0.5:7080/";
 
     // Whether there is a Wi-Fi connection.
     private static boolean wifiConnected;
@@ -80,8 +80,12 @@ public class Transaction extends AppCompatActivity {
         queue= Volley.newRequestQueue(this);
         pDialog = new ProgressDialog(this);
 
+        tvProduct = (TextView)findViewById(R.id.productName);
+        tvBatch = (TextView)findViewById(R.id.batchID);
+
+        //initialize dialog 1 - connect to wifi for action
         AlertDialog.Builder builder = new AlertDialog.Builder(Transaction.this);
-        builder.setMessage("Connect to WIFI and try again")
+        builder.setMessage("Please connect to WIFI")
                 .setCancelable(false)
                 .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -95,6 +99,7 @@ public class Transaction extends AppCompatActivity {
         PostConnectionAlert = builder.create();
         PostConnectionAlert.setCanceledOnTouchOutside(false);
 
+        //initialize dialog 2 - wifi connection lost during the process
         AlertDialog.Builder builder2 = new AlertDialog.Builder(Transaction.this);
         builder2.setMessage("Wifi Connection Lost")
                 .setCancelable(false)
@@ -115,15 +120,9 @@ public class Transaction extends AppCompatActivity {
         nxtAccNum = intent.getStringExtra("nxtAccNum");
         productName = intent.getStringExtra("productName");
         batchID = intent.getStringExtra("batchID");
-        movement = intent.getStringExtra("movement");
 
-        tvProduct = (TextView)findViewById(R.id.productName);
-        tvBatch = (TextView)findViewById(R.id.batchID);
-        tvMovement = (TextView)findViewById(R.id.movement);
-
-        tvProduct.setText("Product: "+productName);
+        tvProduct.setText(productName);
         tvBatch.setText("BatchID: "+batchID);
-        tvMovement.setText("Movement: "+movement);
 
         btnPost = (Button) findViewById(R.id.button);
         btnPost.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +142,7 @@ public class Transaction extends AppCompatActivity {
         });
     }
 
+    //post first json object to blockchain (batchID, movement, unhashed data)
     public void firstPost(String urlString) {
         pDialog.setMessage("Sending to blockchain...");
 
@@ -168,8 +168,9 @@ public class Transaction extends AppCompatActivity {
                         if(!isNetworkAvailable()){
                             ConnectionAlert.show();
                         }else{
-                            Toast.makeText(getApplicationContext(), "Server error occured, please try again", Toast.LENGTH_LONG).show();
+                            Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                         }
+                        pDialog.dismiss();
                         Log.d("Error.PostResponse", error.toString());
                     }
                 }
@@ -177,6 +178,7 @@ public class Transaction extends AppCompatActivity {
         queue.add(postRequest);
     }
 
+    //post second json object to blockchain (batchID, encryptedhashPart1)
     public void secondPost(String urlString) {
 
         postRequest = new JsonObjectRequest(Request.Method.POST, urlString, (String) null,
@@ -200,14 +202,16 @@ public class Transaction extends AppCompatActivity {
                         if(!isNetworkAvailable()){
                             ConnectionAlert.show();
                         }else{
-                            Toast.makeText(getApplicationContext(), "Server error occured, please try again", Toast.LENGTH_LONG).show();
+                            Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                         }
+                        pDialog.dismiss();
                     }
                 }
         );
         queue.add(postRequest);
     }
 
+    //post third json object to blockchain (batchID, encryptedhashPart2)
     public void thirdPost(String urlString) {
 
         postRequest = new JsonObjectRequest(Request.Method.POST, urlString, (String) null,
@@ -231,8 +235,9 @@ public class Transaction extends AppCompatActivity {
                         if(!isNetworkAvailable()){
                             ConnectionAlert.show();
                         }else{
-                            Toast.makeText(getApplicationContext(), "Server error occured, please try again", Toast.LENGTH_LONG).show();
+                            Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                         }
+                        pDialog.dismiss();
                         Log.d("Error.PostResponse", error.toString());
                     }
                 }
@@ -240,6 +245,7 @@ public class Transaction extends AppCompatActivity {
         queue.add(postRequest);
     }
 
+    //post third json object to blockchain (batchID, encryptedhashPart3)
     public void fourthPost(String urlString) {
 
         postRequest = new JsonObjectRequest(Request.Method.POST, urlString, (String) null,
@@ -253,11 +259,12 @@ public class Transaction extends AppCompatActivity {
                             Log.d("response", response.toString());
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(Transaction.this);
-                            builder.setMessage("Succcessfully sent to blockchain")
+                            builder.setMessage(R.string.successful_transaction)
                                     .setCancelable(false)
                                     .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 Intent intent = new Intent(Transaction.this, MainActivity.class);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                 startActivity(intent);
                                             }
                                         });
@@ -277,8 +284,9 @@ public class Transaction extends AppCompatActivity {
                         if(!isNetworkAvailable()){
                             ConnectionAlert.show();
                         }else{
-                            Toast.makeText(getApplicationContext(), "Server error occured, please try again", Toast.LENGTH_LONG).show();
+                            Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                         }
+                        pDialog.dismiss();
                         Log.d("Error.PostResponse", error.toString());
                     }
                 }
@@ -286,6 +294,7 @@ public class Transaction extends AppCompatActivity {
         queue.add(postRequest);
     }
 
+    //get response from local server
     public void getLocalInfoFromServer(){
         queue = Volley.newRequestQueue(getApplicationContext());
 
@@ -312,7 +321,6 @@ public class Transaction extends AppCompatActivity {
                     try {
                         //first post data
                         toPost1.put("batchID", batchID);
-                        toPost1.put("movement", movement);
                         toPost1.put("unhashedData", responseData.getString("unhashedData"));
                         link1 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
                                 URLEncoder.encode(toPost1.toString()) + nxtPostLinkPart4;
@@ -349,13 +357,13 @@ public class Transaction extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.d("VolleyError: ", error.toString());
 
-                if(errorCounter <=5){
+                if(errorCounter <=3){
                     getLocalInfoFromServer();
                     errorCounter ++;
                 }else{
                     pDialog.dismiss();
                     AlertDialog.Builder builder = new AlertDialog.Builder(Transaction.this);
-                    builder.setMessage("Site server connection error occured")
+                    builder.setMessage(R.string.server_error)
                             .setCancelable(false)
                             .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
@@ -380,6 +388,7 @@ public class Transaction extends AppCompatActivity {
         }
     }
 
+    // Checks the network connection
     private boolean isNetworkAvailable() {
         connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -10,22 +10,15 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/skyblue"
     tools:context="com.example.user.preconsumerapp.MainActivity"
+    android:gravity="center"
     android:orientation="vertical">
-
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:id="@+id/scanIcon"
-        android:layout_gravity="center">
+        android:background="@drawable/scan"
+        >
     </ImageView>
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner"
-        android:layout_gravity="center">
-    </Spinner>
 
 </LinearLayout>
