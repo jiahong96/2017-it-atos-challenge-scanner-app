@@ -21,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
@@ -58,7 +59,9 @@ public class Transaction extends AppCompatActivity {
     TextView tvProduct,tvBatch;
 
     //nxt url parts
-    String secretPhrase = "appear morning crap became fire liquid probably tease rare swear shut grief";
+   // String secretPhrase = "appear morning crap became fire liquid probably tease rare swear shut grief";
+    String secretPhrase;
+
     private static final String nxtPostLinkPart1 = "http://174.140.168.136:6876/nxt?requestType=sendMessage&secretPhrase=";
     private static final String nxtPostLinkPart2 = "&recipient=";
     private static final String nxtPostLinkPart3 = "&message=";
@@ -120,6 +123,8 @@ public class Transaction extends AppCompatActivity {
         nxtAccNum = intent.getStringExtra("nxtAccNum");
         productName = intent.getStringExtra("productName");
         batchID = intent.getStringExtra("batchID");
+
+        getSecretPhrase(nxtAccNum); // here
 
         tvProduct.setText(productName);
         tvBatch.setText("BatchID: "+batchID);
@@ -394,5 +399,35 @@ public class Transaction extends AppCompatActivity {
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected() && activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+    }
+
+    private void getSecretPhrase(String nxtAcc){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "yourip/generate/getSecret.php?nxtAccountNumber="+nxtAcc,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        try{
+                            JSONObject res = new JSONObject(response);
+                            if(res.has("secretPhrase")){
+                                secretPhrase = res.getString("secretPhrase");
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(),"Error getting secret phrase, no such account",Toast.LENGTH_LONG).show();
+                            }
+
+                        }catch(JSONException e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),"Error getting secret phrase,please check your connection",Toast.LENGTH_LONG).show();
+                Log.d("secret error", error.toString());
+            }
+        });
+        queue.add(stringRequest);
     }
 }
