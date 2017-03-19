@@ -27,8 +27,10 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URLEncoder;
 
 import static com.example.user.preconsumerapp.MainActivity.ConnectionAlert;
@@ -47,6 +49,7 @@ public class Transaction extends AppCompatActivity {
 
     int errorCounter;
 
+    AlertDialog alert;
     JSONObject toPost1 = null;
     JSONObject toPost2 = null;
     JSONObject toPost3 = null;
@@ -59,8 +62,7 @@ public class Transaction extends AppCompatActivity {
     TextView tvProduct,tvBatch;
 
     //nxt url parts
-   // String secretPhrase = "appear morning crap became fire liquid probably tease rare swear shut grief";
-    String secretPhrase;
+    String secretPhrase = null;
 
     private static final String nxtPostLinkPart1 = "http://174.140.168.136:6876/nxt?requestType=sendMessage&secretPhrase=";
     private static final String nxtPostLinkPart2 = "&recipient=";
@@ -68,10 +70,7 @@ public class Transaction extends AppCompatActivity {
     private static final String nxtPostLinkPart4 = "&deadline=60&feeNQT=0";
 
     //Local Server IP
-    private static final String getInfoUrl = "http://192.168.0.5:7080/";
-
-    // Whether there is a Wi-Fi connection.
-    private static boolean wifiConnected;
+    private static String getInfoUrl;
 
     private ProgressDialog pDialog;
 
@@ -80,6 +79,7 @@ public class Transaction extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
 
+        getInfoUrl = readRawTextFile(Transaction.this,R.raw.serverip);
         queue= Volley.newRequestQueue(this);
         pDialog = new ProgressDialog(this);
 
@@ -88,7 +88,7 @@ public class Transaction extends AppCompatActivity {
 
         //initialize dialog 1 - connect to wifi for action
         AlertDialog.Builder builder = new AlertDialog.Builder(Transaction.this);
-        builder.setMessage("Please connect to WIFI")
+        builder.setMessage("No WIFI connection")
                 .setCancelable(false)
                 .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -106,17 +106,24 @@ public class Transaction extends AppCompatActivity {
         AlertDialog.Builder builder2 = new AlertDialog.Builder(Transaction.this);
         builder2.setMessage("Wifi Connection Lost")
                 .setCancelable(false)
-                .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-                    }
-                })
                 .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                     }
                 });
         ConnectionAlert = builder2.create();
         ConnectionAlert.setCanceledOnTouchOutside(false);
+
+        //initialize dialog 3 - wifi connection lost during the process
+        AlertDialog.Builder builder3 = new AlertDialog.Builder(Transaction.this);
+        builder3.setMessage("Failed to get secret phase")
+                .setCancelable(false)
+                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                    }
+                });
+        alert = builder3.create();
+        alert.setCanceledOnTouchOutside(false);
 
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
@@ -135,9 +142,8 @@ public class Transaction extends AppCompatActivity {
             public void onClick(View view) {
 
                 secretPhrase = secretPhrase.replaceAll(" ","%20");
-                updateConnectedFlags();
 
-                if(wifiConnected==false){
+                if(!isNetworkAvailable()){
                     PostConnectionAlert.show();
                 }else{
                     getLocalInfoFromServer();
@@ -170,12 +176,12 @@ public class Transaction extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // error
+                        pDialog.dismiss();
                         if(!isNetworkAvailable()){
                             ConnectionAlert.show();
                         }else{
                             Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                         }
-                        pDialog.dismiss();
                         Log.d("Error.PostResponse", error.toString());
                     }
                 }
@@ -204,12 +210,12 @@ public class Transaction extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // error
+                        pDialog.dismiss();
                         if(!isNetworkAvailable()){
                             ConnectionAlert.show();
                         }else{
                             Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                         }
-                        pDialog.dismiss();
                     }
                 }
         );
@@ -237,12 +243,12 @@ public class Transaction extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // error
+                        pDialog.dismiss();
                         if(!isNetworkAvailable()){
                             ConnectionAlert.show();
                         }else{
                             Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                         }
-                        pDialog.dismiss();
                         Log.d("Error.PostResponse", error.toString());
                     }
                 }
@@ -268,9 +274,7 @@ public class Transaction extends AppCompatActivity {
                                     .setCancelable(false)
                                     .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
-                                                Intent intent = new Intent(Transaction.this, MainActivity.class);
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                startActivity(intent);
+                                                finish();
                                             }
                                         });
                             AlertDialog alert = builder.create();
@@ -286,12 +290,12 @@ public class Transaction extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // error
+                        pDialog.dismiss();
                         if(!isNetworkAvailable()){
                             ConnectionAlert.show();
                         }else{
                             Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                         }
-                        pDialog.dismiss();
                         Log.d("Error.PostResponse", error.toString());
                     }
                 }
@@ -366,31 +370,17 @@ public class Transaction extends AppCompatActivity {
                     getLocalInfoFromServer();
                     errorCounter ++;
                 }else{
+                    // error
                     pDialog.dismiss();
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Transaction.this);
-                    builder.setMessage(R.string.server_error)
-                            .setCancelable(false)
-                            .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                }
-                            });
-                    AlertDialog alert = builder.create();
-                    alert.setCanceledOnTouchOutside(false);
-                    alert.show();
+                    if(!isNetworkAvailable()){
+                        ConnectionAlert.show();
+                    }else{
+                        Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
         queue.add(getRequest);
-    }
-
-    // Checks the network connection and sets the wifiConnected and mobileConnected
-    // variables accordingly.
-    public void updateConnectedFlags() {
-        if (isNetworkAvailable()) {
-            wifiConnected = true;
-        } else {
-            wifiConnected = false;
-        }
     }
 
     // Checks the network connection
@@ -413,7 +403,7 @@ public class Transaction extends AppCompatActivity {
                                 secretPhrase = res.getString("secretPhrase");
                             }
                             else{
-                                Toast.makeText(getApplicationContext(),"Error getting secret phrase, no such account",Toast.LENGTH_LONG).show();
+                                alert.show();
                             }
 
                         }catch(JSONException e){
@@ -424,10 +414,30 @@ public class Transaction extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"Error getting secret phrase,please check your connection",Toast.LENGTH_LONG).show();
+                alert.show();
                 Log.d("secret error", error.toString());
             }
         });
         queue.add(stringRequest);
+    }
+
+    public static String readRawTextFile(Context ctx, int resId)
+    {
+        InputStream inputStream = ctx.getResources().openRawResource(resId);
+
+        InputStreamReader inputreader = new InputStreamReader(inputStream);
+        BufferedReader buffreader = new BufferedReader(inputreader);
+        String line;
+        StringBuilder text = new StringBuilder();
+
+        try {
+            while (( line = buffreader.readLine()) != null) {
+                text.append(line);
+                text.append('\n');
+            }
+        } catch (IOException e) {
+            return null;
+        }
+        return text.toString();
     }
 }

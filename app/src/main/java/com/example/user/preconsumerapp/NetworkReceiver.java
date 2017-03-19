@@ -37,7 +37,7 @@ public class NetworkReceiver extends BroadcastReceiver {
             // Otherwise, the app can't download content--because the pref setting is WIFI, and there
             // is no Wi-Fi connection.
         }  else{
-            Toast.makeText(main, R.string.lost_connection, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(main, R.string.lost_connection, Toast.LENGTH_SHORT).show();
         }
     }
 }

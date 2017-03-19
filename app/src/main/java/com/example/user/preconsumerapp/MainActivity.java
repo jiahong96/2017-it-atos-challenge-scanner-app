@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //standardized QR data format
                 if (qrData.has("nxtAccNum") && qrData.has("batchID") && qrData.has("productName")) {
-                    Toast.makeText(this, "Valid FoodChain™ QR detected", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, "Valid FoodChain™ QR detected", Toast.LENGTH_LONG).show();
                     nxtAccNum = qrData.getString("nxtAccNum");
                     batchID = qrData.getString("batchID");
                     productName = qrData.getString("productName");
