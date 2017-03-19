@@ -334,6 +334,8 @@ public class Transaction extends AppCompatActivity {
                         link1 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
                                 URLEncoder.encode(toPost1.toString()) + nxtPostLinkPart4;
 
+                        Log.d("url",link1);
+
                         //second post data
                         toPost2.put("batchID", batchID);
                         toPost2.put("encryptedHash1", responseData.getString("encryptedHash1"));
@@ -392,7 +394,7 @@ public class Transaction extends AppCompatActivity {
     }
 
     private void getSecretPhrase(String nxtAcc){
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "yourip/generate/getSecret.php?nxtAccountNumber="+nxtAcc,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.0.104/generate/getSecret.php?nxtAccountNumber="+nxtAcc,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
