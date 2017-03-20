@@ -49,7 +49,7 @@ public class Transaction extends AppCompatActivity {
 
     int errorCounter;
 
-    AlertDialog alert;
+    AlertDialog SecretPhraseAlert, SucessTransactionAlert;
     JSONObject toPost1 = null;
     JSONObject toPost2 = null;
     JSONObject toPost3 = null;
@@ -79,10 +79,11 @@ public class Transaction extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
 
+        // get local server IP from text file
         getInfoUrl = readRawTextFile(Transaction.this,R.raw.serverip);
+
         queue= Volley.newRequestQueue(this);
         pDialog = new ProgressDialog(this);
-
         tvProduct = (TextView)findViewById(R.id.productName);
         tvBatch = (TextView)findViewById(R.id.batchID);
 
@@ -113,7 +114,7 @@ public class Transaction extends AppCompatActivity {
         ConnectionAlert = builder2.create();
         ConnectionAlert.setCanceledOnTouchOutside(false);
 
-        //initialize dialog 3 - wifi connection lost during the process
+        //initialize dialog 3 - failed to get secret phrase for transaction
         AlertDialog.Builder builder3 = new AlertDialog.Builder(Transaction.this);
         builder3.setMessage("Failed to get secret phase")
                 .setCancelable(false)
@@ -122,8 +123,20 @@ public class Transaction extends AppCompatActivity {
                         finish();
                     }
                 });
-        alert = builder3.create();
-        alert.setCanceledOnTouchOutside(false);
+        SecretPhraseAlert = builder3.create();
+        SecretPhraseAlert.setCanceledOnTouchOutside(false);
+
+        //initialize dialog 4 - successful transaction
+        AlertDialog.Builder builder4 = new AlertDialog.Builder(Transaction.this);
+        builder4.setMessage(R.string.successful_transaction)
+                .setCancelable(false)
+                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                    }
+                });
+        SucessTransactionAlert = builder4.create();
+        SucessTransactionAlert.setCanceledOnTouchOutside(false);
 
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
@@ -131,7 +144,8 @@ public class Transaction extends AppCompatActivity {
         productName = intent.getStringExtra("productName");
         batchID = intent.getStringExtra("batchID");
 
-        getSecretPhrase(nxtAccNum); // here
+        // get secret phrase from local server
+        getSecretPhrase(nxtAccNum);
 
         tvProduct.setText(productName);
         tvBatch.setText("BatchID: "+batchID);
@@ -141,16 +155,111 @@ public class Transaction extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                // remove all the space characters
                 secretPhrase = secretPhrase.replaceAll(" ","%20");
 
+                // check if wifi is available or not
                 if(!isNetworkAvailable()){
                     PostConnectionAlert.show();
                 }else{
                     getLocalInfoFromServer();
                 }
-
             }
         });
+    }
+
+    //get response from local server
+    public void getLocalInfoFromServer(){
+        queue = Volley.newRequestQueue(getApplicationContext());
+
+        // Showing progress dialog before making http request
+        pDialog.setMessage("Getting response from server...");
+        pDialog.setCancelable(false);
+        pDialog.show();
+
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, getInfoUrl, (String) null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    //get json Object
+                    responseData = response;
+                    Log.d("Response: ", responseData.toString());
+
+                    //assign data to post objects
+                    toPost1 = new JSONObject();
+                    toPost2 = new JSONObject();
+                    toPost3 = new JSONObject();
+                    toPost4 = new JSONObject();
+
+                    try {
+                        //first post data
+                        toPost1.put("batchID", batchID);
+                        toPost1.put("unhashedData", responseData.getString("unhashedData"));
+                        link1 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
+                                URLEncoder.encode(toPost1.toString()) + nxtPostLinkPart4;
+
+                        //second post data
+                        toPost2.put("batchID", batchID);
+                        toPost2.put("encryptedHash1", responseData.getString("encryptedHash1"));
+                        link2 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
+                                URLEncoder.encode(toPost2.toString()) + nxtPostLinkPart4;
+
+                        //third post data
+                        toPost3.put("batchID", batchID);
+                        toPost3.put("encryptedHash2", responseData.getString("encryptedHash2"));
+                        link3 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
+                                URLEncoder.encode(toPost3.toString()) + nxtPostLinkPart4;
+
+                        //fourth post data
+                        toPost4.put("batchID", batchID);
+                        toPost4.put("encryptedHash3", responseData.getString("encryptedHash3"));
+                        link4 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
+                                URLEncoder.encode(toPost4.toString()) + nxtPostLinkPart4;
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // error
+                        pDialog.dismiss();
+                        if(!isNetworkAvailable()){
+                            ConnectionAlert.show();
+                        }else{
+                            Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    // call the first post function
+                    firstPost(link1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    // error
+                    pDialog.dismiss();
+                    if(!isNetworkAvailable()){
+                        ConnectionAlert.show();
+                    }else{
+                        Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("VolleyError: ", error.toString());
+
+                if(errorCounter <=3){
+                    getLocalInfoFromServer();
+                    errorCounter ++;
+                }else{
+                    // error
+                    pDialog.dismiss();
+                    if(!isNetworkAvailable()){
+                        ConnectionAlert.show();
+                    }else{
+                        Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
+        queue.add(getRequest);
     }
 
     //post first json object to blockchain (batchID, movement, unhashed data)
@@ -165,9 +274,18 @@ public class Transaction extends AppCompatActivity {
                         try {
                             Log.d("Response", response.toString(4));
                             Log.d("response", response.toString());
+
+                            // on response call the second post function
                             secondPost(link2);
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            // error
+                            pDialog.dismiss();
+                            if(!isNetworkAvailable()){
+                                ConnectionAlert.show();
+                            }else{
+                                Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
+                            }
                         }
 
                     }
@@ -200,9 +318,17 @@ public class Transaction extends AppCompatActivity {
                         try {
                             Log.d("Response", response.toString(4));
                             Log.d("response", response.toString());
+                            // on response call the third post function
                             thirdPost(link3);
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            // error
+                            pDialog.dismiss();
+                            if(!isNetworkAvailable()){
+                                ConnectionAlert.show();
+                            }else{
+                                Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
                 },
@@ -233,9 +359,17 @@ public class Transaction extends AppCompatActivity {
                         try {
                             Log.d("Response", response.toString(4));
                             Log.d("response", response.toString());
+                            // on response call the fourth post function
                             fourthPost(link4);
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            // error
+                            pDialog.dismiss();
+                            if(!isNetworkAvailable()){
+                                ConnectionAlert.show();
+                            }else{
+                                Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
                 },
@@ -269,20 +403,17 @@ public class Transaction extends AppCompatActivity {
                             Log.d("Response", response.toString(4));
                             Log.d("response", response.toString());
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Transaction.this);
-                            builder.setMessage(R.string.successful_transaction)
-                                    .setCancelable(false)
-                                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                finish();
-                                            }
-                                        });
-                            AlertDialog alert = builder.create();
-                            alert.setCanceledOnTouchOutside(false);
-                            alert.show();
+                            SecretPhraseAlert.show();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            // error
+                            pDialog.dismiss();
+                            if(!isNetworkAvailable()){
+                                ConnectionAlert.show();
+                            }else{
+                                Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
                 },
@@ -393,6 +524,7 @@ public class Transaction extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected() && activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI;
     }
 
+    // get secret phrase from local server
     private void getSecretPhrase(String nxtAcc){
         StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.0.104/generate/getSecret.php?nxtAccountNumber="+nxtAcc,
                 new Response.Listener<String>() {
@@ -405,7 +537,7 @@ public class Transaction extends AppCompatActivity {
                                 secretPhrase = res.getString("secretPhrase");
                             }
                             else{
-                                alert.show();
+                                SecretPhraseAlert.show();
                             }
 
                         }catch(JSONException e){
@@ -416,13 +548,14 @@ public class Transaction extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                alert.show();
+                SecretPhraseAlert.show();
                 Log.d("secret error", error.toString());
             }
         });
         queue.add(stringRequest);
     }
 
+    // read string from text file
     public static String readRawTextFile(Context ctx, int resId)
     {
         InputStream inputStream = ctx.getResources().openRawResource(resId);
