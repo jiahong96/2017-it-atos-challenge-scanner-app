@@ -80,7 +80,7 @@ public class Transaction extends AppCompatActivity {
         setContentView(R.layout.activity_transaction);
 
         // get local server IP from text file
-        getInfoUrl = readRawTextFile(Transaction.this,R.raw.serverip);
+        getInfoUrl = readRawTextFile(Transaction.this,R.raw.serverip).replaceAll("\\s+","")+":7080/";
 
         queue= Volley.newRequestQueue(this);
         pDialog = new ProgressDialog(this);
@@ -144,9 +144,6 @@ public class Transaction extends AppCompatActivity {
         productName = intent.getStringExtra("productName");
         batchID = intent.getStringExtra("batchID");
 
-        // get secret phrase from local server
-        getSecretPhrase(nxtAccNum);
-
         tvProduct.setText(productName);
         tvBatch.setText("BatchID: "+batchID);
 
@@ -155,27 +152,65 @@ public class Transaction extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                // remove all the space characters
-                secretPhrase = secretPhrase.replaceAll(" ","%20");
-
                 // check if wifi is available or not
                 if(!isNetworkAvailable()){
                     PostConnectionAlert.show();
                 }else{
-                    getLocalInfoFromServer();
+                    // get secret phrase from local server
+                    getSecretPhrase(nxtAccNum);
                 }
             }
         });
     }
 
-    //get response from local server
-    public void getLocalInfoFromServer(){
-        queue = Volley.newRequestQueue(getApplicationContext());
-
+    // get secret phrase from local server
+    private void getSecretPhrase(String nxtAcc){
         // Showing progress dialog before making http request
         pDialog.setMessage("Getting response from server...");
         pDialog.setCancelable(false);
         pDialog.show();
+
+        String url = readRawTextFile(Transaction.this,R.raw.serverip).replaceAll("\\s+","")+"/generate/getSecret.php?nxtAccountNumber="+nxtAcc;
+        Log.d ("aa",url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url ,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        try{
+                            JSONObject res = new JSONObject(response);
+                            if(res.has("secretPhrase")){
+                                secretPhrase = res.getString("secretPhrase");
+                                // remove all the space characters
+                                secretPhrase = secretPhrase.replaceAll(" ","%20");
+                                getLocalInfoFromServer();
+                            }
+                            else{
+                                pDialog.dismiss();
+                                SecretPhraseAlert.show();
+                            }
+
+                        }catch(JSONException e){
+                            e.printStackTrace();
+                            pDialog.dismiss();
+                            SecretPhraseAlert.show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                pDialog.dismiss();
+                SecretPhraseAlert.show();
+                Log.d("secret error", error.toString());
+            }
+        });
+        queue.add(stringRequest);
+    }
+
+    //get response from local server
+    public void getLocalInfoFromServer(){
+        queue = Volley.newRequestQueue(getApplicationContext());
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, getInfoUrl, (String) null, new Response.Listener<JSONObject>() {
             @Override
@@ -403,7 +438,7 @@ public class Transaction extends AppCompatActivity {
                             Log.d("Response", response.toString(4));
                             Log.d("response", response.toString());
 
-                            SecretPhraseAlert.show();
+                            SucessTransactionAlert.show();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -433,44 +468,13 @@ public class Transaction extends AppCompatActivity {
         );
         queue.add(postRequest);
     }
-    
+
     // Checks the network connection
     private boolean isNetworkAvailable() {
         connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected() && activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI;
-    }
-
-    // get secret phrase from local server
-    private void getSecretPhrase(String nxtAcc){
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.0.104/generate/getSecret.php?nxtAccountNumber="+nxtAcc,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        try{
-                            JSONObject res = new JSONObject(response);
-                            if(res.has("secretPhrase")){
-                                secretPhrase = res.getString("secretPhrase");
-                            }
-                            else{
-                                SecretPhraseAlert.show();
-                            }
-
-                        }catch(JSONException e){
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                SecretPhraseAlert.show();
-                Log.d("secret error", error.toString());
-            }
-        });
-        queue.add(stringRequest);
     }
 
     // read string from text file
