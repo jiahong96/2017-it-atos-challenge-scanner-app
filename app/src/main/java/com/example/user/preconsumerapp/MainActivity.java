@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     boolean doubleBackToExitPressedOnce = false;
     ImageView imgScan;
 
-    public static AlertDialog ConnectionAlert=null;
     public static AlertDialog PostConnectionAlert=null;
 
     //Request external storage

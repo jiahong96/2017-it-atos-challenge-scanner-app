@@ -33,7 +33,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
 
-import static com.example.user.preconsumerapp.MainActivity.ConnectionAlert;
 import static com.example.user.preconsumerapp.MainActivity.PostConnectionAlert;
 
 public class Transaction extends AppCompatActivity {
@@ -49,7 +48,7 @@ public class Transaction extends AppCompatActivity {
 
     int errorCounter;
 
-    AlertDialog SecretPhraseAlert, SucessTransactionAlert;
+    AlertDialog SucessTransactionAlert;
     JSONObject toPost1 = null;
     JSONObject toPost2 = null;
     JSONObject toPost3 = null;
@@ -103,39 +102,16 @@ public class Transaction extends AppCompatActivity {
         PostConnectionAlert = builder.create();
         PostConnectionAlert.setCanceledOnTouchOutside(false);
 
-        //initialize dialog 2 - wifi connection lost during the process
+        //initialize dialog 2 - successful transaction
         AlertDialog.Builder builder2 = new AlertDialog.Builder(Transaction.this);
-        builder2.setMessage("Wifi Connection Lost")
-                .setCancelable(false)
-                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                });
-        ConnectionAlert = builder2.create();
-        ConnectionAlert.setCanceledOnTouchOutside(false);
-
-        //initialize dialog 3 - failed to get secret phrase for transaction
-        AlertDialog.Builder builder3 = new AlertDialog.Builder(Transaction.this);
-        builder3.setMessage("Failed to get secret phase")
+        builder2.setMessage(R.string.successful_transaction)
                 .setCancelable(false)
                 .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         finish();
                     }
                 });
-        SecretPhraseAlert = builder3.create();
-        SecretPhraseAlert.setCanceledOnTouchOutside(false);
-
-        //initialize dialog 4 - successful transaction
-        AlertDialog.Builder builder4 = new AlertDialog.Builder(Transaction.this);
-        builder4.setMessage(R.string.successful_transaction)
-                .setCancelable(false)
-                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
-                    }
-                });
-        SucessTransactionAlert = builder4.create();
+        SucessTransactionAlert = builder2.create();
         SucessTransactionAlert.setCanceledOnTouchOutside(false);
 
         // Get the Intent that started this activity and extract the string
@@ -187,13 +163,13 @@ public class Transaction extends AppCompatActivity {
                             }
                             else{
                                 pDialog.dismiss();
-                                SecretPhraseAlert.show();
+                                Toast.makeText(Transaction.this, R.string.secret_error, Toast.LENGTH_LONG).show();
                             }
 
                         }catch(JSONException e){
                             e.printStackTrace();
                             pDialog.dismiss();
-                            SecretPhraseAlert.show();
+                            Toast.makeText(Transaction.this, R.string.secret_error, Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -201,7 +177,7 @@ public class Transaction extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 pDialog.dismiss();
-                SecretPhraseAlert.show();
+                Toast.makeText(Transaction.this, R.string.secret_error, Toast.LENGTH_LONG).show();
                 Log.d("secret error", error.toString());
             }
         });
@@ -256,7 +232,7 @@ public class Transaction extends AppCompatActivity {
                         // error
                         pDialog.dismiss();
                         if(!isNetworkAvailable()){
-                            ConnectionAlert.show();
+                            Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                         }
@@ -269,7 +245,7 @@ public class Transaction extends AppCompatActivity {
                     // error
                     pDialog.dismiss();
                     if(!isNetworkAvailable()){
-                        ConnectionAlert.show();
+                        Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
                     }else{
                         Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                     }
@@ -287,7 +263,7 @@ public class Transaction extends AppCompatActivity {
                     // error
                     pDialog.dismiss();
                     if(!isNetworkAvailable()){
-                        ConnectionAlert.show();
+                        Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
                     }else{
                         Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                     }
@@ -317,7 +293,7 @@ public class Transaction extends AppCompatActivity {
                             // error
                             pDialog.dismiss();
                             if(!isNetworkAvailable()){
-                                ConnectionAlert.show();
+                                Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
                             }else{
                                 Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                             }
@@ -331,7 +307,7 @@ public class Transaction extends AppCompatActivity {
                         // error
                         pDialog.dismiss();
                         if(!isNetworkAvailable()){
-                            ConnectionAlert.show();
+                            Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                         }
@@ -360,7 +336,7 @@ public class Transaction extends AppCompatActivity {
                             // error
                             pDialog.dismiss();
                             if(!isNetworkAvailable()){
-                                ConnectionAlert.show();
+                                Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
                             }else{
                                 Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                             }
@@ -373,7 +349,7 @@ public class Transaction extends AppCompatActivity {
                         // error
                         pDialog.dismiss();
                         if(!isNetworkAvailable()){
-                            ConnectionAlert.show();
+                            Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                         }
@@ -401,7 +377,7 @@ public class Transaction extends AppCompatActivity {
                             // error
                             pDialog.dismiss();
                             if(!isNetworkAvailable()){
-                                ConnectionAlert.show();
+                                Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
                             }else{
                                 Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                             }
@@ -414,7 +390,7 @@ public class Transaction extends AppCompatActivity {
                         // error
                         pDialog.dismiss();
                         if(!isNetworkAvailable()){
-                            ConnectionAlert.show();
+                            Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                         }
@@ -445,7 +421,7 @@ public class Transaction extends AppCompatActivity {
                             // error
                             pDialog.dismiss();
                             if(!isNetworkAvailable()){
-                                ConnectionAlert.show();
+                                Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
                             }else{
                                 Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                             }
@@ -458,7 +434,7 @@ public class Transaction extends AppCompatActivity {
                         // error
                         pDialog.dismiss();
                         if(!isNetworkAvailable()){
-                            ConnectionAlert.show();
+                            Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
                         }

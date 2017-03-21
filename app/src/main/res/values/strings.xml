@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">PreConsumerApp</string>
-    <string name="lost_connection">No WIFI Connection</string>
+    <string name="lost_connection">WIFI Connection Lost</string>
     <string name="server_error">Local server error occured</string>
     <string name="error">Error occured , please try again</string>
+    <string name="secret_error">Failed to get secret phrase</string>
     <string name="successful_transaction">Successfully sent to blockchain!</string>
     <string-array name="action_array">
         <item>In</item>
