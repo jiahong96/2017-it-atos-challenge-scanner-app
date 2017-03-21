@@ -47,6 +47,7 @@ public class Transaction extends AppCompatActivity {
     String batchID,productName,nxtAccNum;
 
     int errorCounter;
+    int successCount = 0;
 
     AlertDialog SucessTransactionAlert;
     JSONObject toPost1 = null;
@@ -56,6 +57,7 @@ public class Transaction extends AppCompatActivity {
     JSONObject responseData = null;
     JsonObjectRequest postRequest;
     RequestQueue queue;
+
 
     Button btnPost;
     TextView tvProduct,tvBatch;
@@ -146,7 +148,11 @@ public class Transaction extends AppCompatActivity {
         pDialog.setCancelable(false);
         pDialog.show();
 
-        String url = readRawTextFile(Transaction.this,R.raw.serverip).replaceAll("\\s+","")+"/generate/getSecret.php?nxtAccountNumber="+nxtAcc;
+
+
+        //String url = readRawTextFile(Transaction.this,R.raw.serverip).replaceAll("\\s+","")+"/generate/getSecret.php?nxtAccountNumber="+nxtAcc;
+        String url = "http://192.168.0.104/generate/getSecret.php?nxtAccountNumber="+nxtAcc;
+
         Log.d ("aa",url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url ,
                 new Response.Listener<String>() {
@@ -240,6 +246,8 @@ public class Transaction extends AppCompatActivity {
 
                     // call the first post function
                     firstPost(link1);
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     // error
@@ -286,8 +294,19 @@ public class Transaction extends AppCompatActivity {
                             Log.d("Response", response.toString(4));
                             Log.d("response", response.toString());
 
-                            // on response call the second post function
-                            secondPost(link2);
+                            if(response.has("transaction")){
+                                // on response call the second post function
+                                secondPost(link2);
+                            }
+                            else{
+                                pDialog.dismiss();
+                                if(!isNetworkAvailable()){
+                                    Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
+                                }else{
+                                    Toast.makeText(Transaction.this, R.string.accerror, Toast.LENGTH_LONG).show();
+                                }
+                            }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                             // error
@@ -330,7 +349,20 @@ public class Transaction extends AppCompatActivity {
                             Log.d("Response", response.toString(4));
                             Log.d("response", response.toString());
                             // on response call the third post function
-                            thirdPost(link3);
+
+                            if(response.has("transaction")){
+                                // on response call the second post function
+                                thirdPost(link3);
+                            }
+                            else{
+                                pDialog.dismiss();
+                                if(!isNetworkAvailable()){
+                                    Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
+                                }else{
+                                    Toast.makeText(Transaction.this, R.string.accerror, Toast.LENGTH_LONG).show();
+                                }
+                            }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                             // error
@@ -371,7 +403,20 @@ public class Transaction extends AppCompatActivity {
                             Log.d("Response", response.toString(4));
                             Log.d("response", response.toString());
                             // on response call the fourth post function
-                            fourthPost(link4);
+
+                            if(response.has("transaction")){
+                                // on response call the second post function
+                                fourthPost(link4);
+                            }
+                            else{
+                                pDialog.dismiss();
+                                if(!isNetworkAvailable()){
+                                    Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
+                                }else{
+                                    Toast.makeText(Transaction.this, R.string.accerror, Toast.LENGTH_LONG).show();
+                                }
+                            }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                             // error
@@ -414,7 +459,19 @@ public class Transaction extends AppCompatActivity {
                             Log.d("Response", response.toString(4));
                             Log.d("response", response.toString());
 
-                            SucessTransactionAlert.show();
+                            if(response.has("transaction")){
+                                // on response call the second post function
+                                SucessTransactionAlert.show();
+                            }
+                            else{
+                                pDialog.dismiss();
+                                if(!isNetworkAvailable()){
+                                    Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
+                                }else{
+                                    Toast.makeText(Transaction.this, R.string.accerror, Toast.LENGTH_LONG).show();
+                                }
+                            }
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
