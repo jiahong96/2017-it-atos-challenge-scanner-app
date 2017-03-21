@@ -247,7 +247,7 @@ public class Transaction extends AppCompatActivity {
                     if(!isNetworkAvailable()){
                         Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
                     }else{
-                        Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
+                        Toast.makeText(Transaction.this, R.string.server_error, Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -265,7 +265,7 @@ public class Transaction extends AppCompatActivity {
                     if(!isNetworkAvailable()){
                         Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
                     }else{
-                        Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
+                        Toast.makeText(Transaction.this, R.string.server_error, Toast.LENGTH_LONG).show();
                     }
                 }
             }
