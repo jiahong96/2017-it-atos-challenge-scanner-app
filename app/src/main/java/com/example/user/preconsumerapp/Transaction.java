@@ -129,7 +129,6 @@ public class Transaction extends AppCompatActivity {
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 // check if wifi is available or not
                 if(!isNetworkAvailable()){
                     PostConnectionAlert.show();
@@ -300,11 +299,7 @@ public class Transaction extends AppCompatActivity {
                             }
                             else{
                                 pDialog.dismiss();
-                                if(!isNetworkAvailable()){
-                                    Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
-                                }else{
-                                    Toast.makeText(Transaction.this, R.string.accerror, Toast.LENGTH_LONG).show();
-                                }
+                                Toast.makeText(Transaction.this, R.string.accerror, Toast.LENGTH_LONG).show();
                             }
 
                         } catch (JSONException e) {
@@ -356,11 +351,7 @@ public class Transaction extends AppCompatActivity {
                             }
                             else{
                                 pDialog.dismiss();
-                                if(!isNetworkAvailable()){
-                                    Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
-                                }else{
-                                    Toast.makeText(Transaction.this, R.string.accerror, Toast.LENGTH_LONG).show();
-                                }
+                                Toast.makeText(Transaction.this, R.string.accerror, Toast.LENGTH_LONG).show();
                             }
 
                         } catch (JSONException e) {
@@ -410,13 +401,8 @@ public class Transaction extends AppCompatActivity {
                             }
                             else{
                                 pDialog.dismiss();
-                                if(!isNetworkAvailable()){
-                                    Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
-                                }else{
-                                    Toast.makeText(Transaction.this, R.string.accerror, Toast.LENGTH_LONG).show();
-                                }
+                                Toast.makeText(Transaction.this, R.string.accerror, Toast.LENGTH_LONG).show();
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                             // error
@@ -465,14 +451,8 @@ public class Transaction extends AppCompatActivity {
                             }
                             else{
                                 pDialog.dismiss();
-                                if(!isNetworkAvailable()){
-                                    Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
-                                }else{
-                                    Toast.makeText(Transaction.this, R.string.accerror, Toast.LENGTH_LONG).show();
-                                }
+                                Toast.makeText(Transaction.this, R.string.accerror, Toast.LENGTH_LONG).show();
                             }
-
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                             // error
