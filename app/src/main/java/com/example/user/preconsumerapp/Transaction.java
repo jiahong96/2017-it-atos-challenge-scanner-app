@@ -44,7 +44,7 @@ public class Transaction extends AppCompatActivity {
     String link1, link2, link3, link4;
 
     //string for QR scanning result
-    String batchID,productName,nxtAccNum;
+    String batchID,productName,nxtAccNum,nxtTransactionAccNum;
 
     int errorCounter;
     int successCount = 0;
@@ -121,6 +121,7 @@ public class Transaction extends AppCompatActivity {
         nxtAccNum = intent.getStringExtra("nxtAccNum");
         productName = intent.getStringExtra("productName");
         batchID = intent.getStringExtra("batchID");
+        nxtTransactionAccNum = intent.getStringExtra("nxtTransactionAccNum");
 
         tvProduct.setText(productName);
         tvBatch.setText("BatchID: "+batchID);
@@ -134,7 +135,7 @@ public class Transaction extends AppCompatActivity {
                     PostConnectionAlert.show();
                 }else{
                     // get secret phrase from local server
-                    getSecretPhrase(nxtAccNum);
+                    getSecretPhrase(nxtTransactionAccNum);
                 }
             }
         });
@@ -147,10 +148,8 @@ public class Transaction extends AppCompatActivity {
         pDialog.setCancelable(false);
         pDialog.show();
 
-
-
-        //String url = readRawTextFile(Transaction.this,R.raw.serverip).replaceAll("\\s+","")+"/generate/getSecret.php?nxtAccountNumber="+nxtAcc;
-        String url = "http://192.168.0.104/generate/getSecret.php?nxtAccountNumber="+nxtAcc;
+        String url = readRawTextFile(Transaction.this,R.raw.serverip).replaceAll("\\s+","")+"/generate/getSecret.php?nxtAccountNumber="+nxtAcc;
+        //String url = "http://192.168.0.104/generate/getSecret.php?nxtAccountNumber="+nxtAcc;
 
         Log.d ("aa",url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url ,

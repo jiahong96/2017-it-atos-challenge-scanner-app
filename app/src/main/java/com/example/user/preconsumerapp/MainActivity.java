@@ -15,9 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -116,19 +114,18 @@ public class MainActivity extends AppCompatActivity {
             try {
                 JSONObject qrData = new JSONObject(scanResult.getContents());
 
-                //standardized QR data format
+                //standardized QR data format for product
                 if (qrData.has("nxtAccNum") && qrData.has("batchID") && qrData.has("productName")) {
-                    //Toast.makeText(this, "Valid FoodChain™ QR detected", Toast.LENGTH_LONG).show();
                     nxtAccNum = qrData.getString("nxtAccNum");
                     batchID = qrData.getString("batchID");
                     productName = qrData.getString("productName");
-                    Intent intent = new Intent(this, Transaction.class);
+                    Intent intent = new Intent(this, Main2Activity.class);
                     intent.putExtra("nxtAccNum",nxtAccNum);
                     intent.putExtra("batchID",batchID);
                     intent.putExtra("productName",productName);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(this, "Not a Valid FoodChain™ QR , please try again", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Not a Valid FoodChain™ Product QR , please try again", Toast.LENGTH_LONG).show();
                 }
 
             } catch (Exception e) {

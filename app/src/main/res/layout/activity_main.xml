@@ -13,6 +13,15 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <TextView
+        android:text="Scan Product"
+        android:textColor="#212121"
+        android:textSize="40sp"
+        android:textStyle="italic"
+        android:typeface="serif"
+        android:layout_marginBottom="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
