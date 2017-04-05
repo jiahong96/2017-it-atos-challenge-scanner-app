@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 public class Main2Activity extends AppCompatActivity {
     String batchID, productName,nxtAccNum,nxtTransactionAccNum;
+    int quantity;
     ImageView imgScan;
 
     @Override
@@ -27,6 +28,7 @@ public class Main2Activity extends AppCompatActivity {
         nxtAccNum = intent.getStringExtra("nxtAccNum");
         productName = intent.getStringExtra("productName");
         batchID = intent.getStringExtra("batchID");
+        quantity = intent.getIntExtra("Quantity",0);
 
         imgScan = (ImageView) findViewById(R.id.scanIcon);
         imgScan.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +58,7 @@ public class Main2Activity extends AppCompatActivity {
                     intent.putExtra("nxtTransactionAccNum",nxtTransactionAccNum);
                     intent.putExtra("batchID",batchID);
                     intent.putExtra("productName",productName);
+                    intent.putExtra("Quantity",quantity);
                     startActivity(intent);
                 } else {
                     Toast.makeText(this, "Not a Valid FoodChain™ Account QR , please try again", Toast.LENGTH_LONG).show();

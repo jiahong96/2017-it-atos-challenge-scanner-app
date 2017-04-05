@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PreConsumerApp</string>
+    <string name="app_name">Food-Chain Scanner</string>
     <string name="lost_connection">WIFI Connection Lost</string>
     <string name="server_error">Failed to get location server response</string>
     <string name="error">Error occured , please try again</string>

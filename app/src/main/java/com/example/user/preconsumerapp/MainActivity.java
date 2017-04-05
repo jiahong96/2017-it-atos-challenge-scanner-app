@@ -27,6 +27,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
 
     String batchID, productName,nxtAccNum;
+    int quantity;
     boolean doubleBackToExitPressedOnce = false;
     ImageView imgScan;
 
@@ -115,14 +116,16 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject qrData = new JSONObject(scanResult.getContents());
 
                 //standardized QR data format for product
-                if (qrData.has("nxtAccNum") && qrData.has("batchID") && qrData.has("productName")) {
+                if (qrData.has("nxtAccNum") && qrData.has("batchID") && qrData.has("productName") && qrData.has("Quantity")) {
                     nxtAccNum = qrData.getString("nxtAccNum");
                     batchID = qrData.getString("batchID");
                     productName = qrData.getString("productName");
+                    quantity = qrData.getInt("Quantity");
                     Intent intent = new Intent(this, Main2Activity.class);
                     intent.putExtra("nxtAccNum",nxtAccNum);
                     intent.putExtra("batchID",batchID);
                     intent.putExtra("productName",productName);
+                    intent.putExtra("Quantity",quantity);
                     startActivity(intent);
                 } else {
                     Toast.makeText(this, "Not a Valid FoodChain™ Product QR , please try again", Toast.LENGTH_LONG).show();

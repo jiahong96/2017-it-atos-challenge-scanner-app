@@ -47,7 +47,7 @@ public class Transaction extends AppCompatActivity {
     String batchID,productName,nxtAccNum,nxtTransactionAccNum;
 
     int errorCounter;
-    int successCount = 0;
+    int quantity = 0;
 
     AlertDialog SucessTransactionAlert;
     JSONObject toPost1 = null;
@@ -121,6 +121,7 @@ public class Transaction extends AppCompatActivity {
         nxtAccNum = intent.getStringExtra("nxtAccNum");
         productName = intent.getStringExtra("productName");
         batchID = intent.getStringExtra("batchID");
+        quantity = intent.getIntExtra("Quantity",0);
         nxtTransactionAccNum = intent.getStringExtra("nxtTransactionAccNum");
 
         tvProduct.setText(productName);
@@ -209,6 +210,7 @@ public class Transaction extends AppCompatActivity {
                     try {
                         //first post data
                         toPost1.put("batchID", batchID);
+                        toPost1.put("Quantity",quantity);
                         toPost1.put("unhashedData", responseData.getString("unhashedData"));
                         link1 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
                                 URLEncoder.encode(toPost1.toString()) + nxtPostLinkPart4;
