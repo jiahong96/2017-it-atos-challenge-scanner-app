@@ -78,6 +78,9 @@ public class Transaction extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         setContentView(R.layout.activity_transaction);
 
         // get local server IP from text file
@@ -110,7 +113,9 @@ public class Transaction extends AppCompatActivity {
                 .setCancelable(false)
                 .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        finish();
+                        Intent intent = new Intent(Transaction.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                     }
                 });
         SucessTransactionAlert = builder2.create();
@@ -149,7 +154,7 @@ public class Transaction extends AppCompatActivity {
         pDialog.setCancelable(false);
         pDialog.show();
 
-        String url = readRawTextFile(Transaction.this,R.raw.serverip).replaceAll("\\s+","")+"/generate/getSecret.php?nxtAccountNumber="+nxtAcc;
+        String url = readRawTextFile(Transaction.this,R.raw.serverip).replaceAll("\\s+","")+"/Generate2/getSecret.php?nxtAccountNumber="+nxtAcc;
         //String url = "http://192.168.0.104/generate/getSecret.php?nxtAccountNumber="+nxtAcc;
 
         Log.d ("aa",url);
