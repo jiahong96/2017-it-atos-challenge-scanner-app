@@ -7,7 +7,7 @@
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
-        sha1="0b4f1cd509f60a2f0f8f1a0db33d03cd2226bbe1">
+        sha1="381e78f6b6814df470537a690c24b7ca2729ea77">
         <dex dex="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_6baed7827a8f830116ebd9dde110a0283c3bdb4f\classes.dex" />
     </item>
     <item
@@ -124,7 +124,7 @@
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
-        sha1="a734d76302de1e5c9cc5b59cc0f9d00d4c23f055">
+        sha1="d98a0519cecfafb1c3fef1fd6937d8e37d5c9da8">
         <dex dex="C:\Users\CheahHong\Desktop\AtosScannerApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_3687ea4041bd63497074e39aff474abbdeb05ce2\classes.dex" />
     </item>
     <item
