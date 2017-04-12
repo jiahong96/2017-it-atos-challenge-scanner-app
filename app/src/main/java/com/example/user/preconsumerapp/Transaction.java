@@ -154,7 +154,7 @@ public class Transaction extends AppCompatActivity {
         pDialog.setCancelable(false);
         pDialog.show();
 
-        String url = readRawTextFile(Transaction.this,R.raw.serverip).replaceAll("\\s+","")+"/Generate2/getSecret.php?nxtAccountNumber="+nxtAcc;
+        String url = readRawTextFile(Transaction.this,R.raw.serverip).replaceAll("\\s+","")+"/generate2/getSecret.php?nxtAccountNumber="+nxtAcc;
         //String url = "http://192.168.0.104/generate/getSecret.php?nxtAccountNumber="+nxtAcc;
 
         Log.d ("aa",url);
