@@ -84,7 +84,8 @@ public class Transaction extends AppCompatActivity {
         setContentView(R.layout.activity_transaction);
 
         // get local server IP from text file
-        getInfoUrl = readRawTextFile(Transaction.this,R.raw.serverip).replaceAll("\\s+","")+":7080/";
+        //getInfoUrl = readRawTextFile(Transaction.this,R.raw.serverip).replaceAll("\\s+","")+":7080/";
+        getInfoUrl = "http://128.199.127.154:7080/";
 
         queue= Volley.newRequestQueue(this);
         pDialog = new ProgressDialog(this);
@@ -164,6 +165,7 @@ public class Transaction extends AppCompatActivity {
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
                         try{
+                            Log.d ("secretPhraseResponse","yes");
                             JSONObject res = new JSONObject(response);
                             if(res.has("secretPhrase")){
                                 secretPhrase = res.getString("secretPhrase");
@@ -197,7 +199,7 @@ public class Transaction extends AppCompatActivity {
     //get response from local server
     public void getLocalInfoFromServer(){
         queue = Volley.newRequestQueue(getApplicationContext());
-
+        Log.d ("Local java server",getInfoUrl);
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, getInfoUrl, (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

@@ -14,12 +14,12 @@
     tools:context="com.example.user.preconsumerapp.Transaction">
 
     <TextView
-        android:text="Product"
+        android:text="Langsana Meat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#212121"
-        android:textSize="50sp"
-        android:textStyle="italic"
+        android:textSize="25sp"
+        android:textStyle="italic|bold"
         android:typeface="serif"
         android:id="@+id/productName" />
 
