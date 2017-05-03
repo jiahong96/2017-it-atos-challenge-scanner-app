@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -28,10 +30,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.Socket;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 
 import static com.example.user.preconsumerapp.MainActivity.PostConnectionAlert;
 
@@ -72,7 +77,8 @@ public class Transaction extends AppCompatActivity {
 
     //Local Server IP
     private static String getInfoUrl;
-
+    Socket s;
+    String serverResponse;
     private ProgressDialog pDialog;
 
     @Override
@@ -151,6 +157,7 @@ public class Transaction extends AppCompatActivity {
     // get secret phrase from local server
     private void getSecretPhrase(String nxtAcc){
         // Showing progress dialog before making http request
+        //System.setProperty("http.keepAlive", "false");
         pDialog.setMessage("Getting response from server...");
         pDialog.setCancelable(false);
         pDialog.show();
@@ -193,105 +200,193 @@ public class Transaction extends AppCompatActivity {
                 Log.d("secret error", error.toString());
             }
         });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 
     //get response from local server
     public void getLocalInfoFromServer(){
-        queue = Volley.newRequestQueue(getApplicationContext());
+        //System.setProperty("http.keepAlive", "false");
         Log.d ("Local java server",getInfoUrl);
-        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, getInfoUrl, (String) null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    //get json Object
-                    responseData = response;
-                    Log.d("Response: ", responseData.toString());
+        communicateServer request = new communicateServer();
+        request.execute();
+//        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, getInfoUrl, (String) null, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                try {
+//                    //get json Object
+//                    responseData = response;
+//                    Log.d("Response: ", responseData.toString());
+//
+//                    //assign data to post objects
+//                    toPost1 = new JSONObject();
+//                    toPost2 = new JSONObject();
+//                    toPost3 = new JSONObject();
+//                    toPost4 = new JSONObject();
+//
+//                    try {
+//                        //first post data
+//                        toPost1.put("batchID", batchID);
+//                        toPost1.put("Quantity",quantity);
+//                        toPost1.put("unhashedData", responseData.getString("unhashedData"));
+//                        link1 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
+//                                URLEncoder.encode(toPost1.toString()) + nxtPostLinkPart4;
+//
+//                        //second post data
+//                        toPost2.put("batchID", batchID);
+//                        toPost2.put("encryptedHash1", responseData.getString("encryptedHash1"));
+//                        link2 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
+//                                URLEncoder.encode(toPost2.toString()) + nxtPostLinkPart4;
+//
+//                        //third post data
+//                        toPost3.put("batchID", batchID);
+//                        toPost3.put("encryptedHash2", responseData.getString("encryptedHash2"));
+//                        link3 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
+//                                URLEncoder.encode(toPost3.toString()) + nxtPostLinkPart4;
+//
+//                        //fourth post data
+//                        toPost4.put("batchID", batchID);
+//                        toPost4.put("encryptedHash3", responseData.getString("encryptedHash3"));
+//                        link4 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
+//                                URLEncoder.encode(toPost4.toString()) + nxtPostLinkPart4;
+//
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        // error
+//                        pDialog.dismiss();
+//                        if(!isNetworkAvailable()){
+//                            Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
+//                        }else{
+//                            Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
+//                        }
+//                    }
+//
+//                    // call the first post function
+//                    //firstPost(link1);
+//
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    // error
+//                    pDialog.dismiss();
+//                    if(!isNetworkAvailable()){
+//                        Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
+//                    }else{
+//                        Toast.makeText(Transaction.this, R.string.server_error, Toast.LENGTH_LONG).show();
+//                    }
+//                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.d("VolleyError: ", error.toString());
+//
+//                if(errorCounter <=3){
+//                    getLocalInfoFromServer();
+//                    errorCounter ++;
+//                }else{
+//                    // error
+//                    pDialog.dismiss();
+//                    if(!isNetworkAvailable()){
+//                        Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
+//                    }else{
+//                        Toast.makeText(Transaction.this, R.string.server_error, Toast.LENGTH_LONG).show();
+//                    }
+//                }
+//            }
+//        });
+//        getRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        queue.add(getRequest);
 
-                    //assign data to post objects
-                    toPost1 = new JSONObject();
-                    toPost2 = new JSONObject();
-                    toPost3 = new JSONObject();
-                    toPost4 = new JSONObject();
 
-                    try {
-                        //first post data
-                        toPost1.put("batchID", batchID);
-                        toPost1.put("Quantity",quantity);
-                        toPost1.put("unhashedData", responseData.getString("unhashedData"));
-                        link1 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
-                                URLEncoder.encode(toPost1.toString()) + nxtPostLinkPart4;
 
-                        //second post data
-                        toPost2.put("batchID", batchID);
-                        toPost2.put("encryptedHash1", responseData.getString("encryptedHash1"));
-                        link2 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
-                                URLEncoder.encode(toPost2.toString()) + nxtPostLinkPart4;
 
-                        //third post data
-                        toPost3.put("batchID", batchID);
-                        toPost3.put("encryptedHash2", responseData.getString("encryptedHash2"));
-                        link3 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
-                                URLEncoder.encode(toPost3.toString()) + nxtPostLinkPart4;
 
-                        //fourth post data
-                        toPost4.put("batchID", batchID);
-                        toPost4.put("encryptedHash3", responseData.getString("encryptedHash3"));
-                        link4 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
-                                URLEncoder.encode(toPost4.toString()) + nxtPostLinkPart4;
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        // error
-                        pDialog.dismiss();
-                        if(!isNetworkAvailable()){
-                            Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
-                        }else{
-                            Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
+    }
+
+    private class communicateServer extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String[] params) {
+            try {
+                s = new Socket("128.199.127.154",7080);
+
+                // testing only - trying to get the response back from the server
+                BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+                while(true) {
+                    if ((serverResponse = in.readLine()) != null) {
+                        Log.i("server says", serverResponse);
+                        //assign data to post objects
+                        try {
+                            responseData = new JSONObject(serverResponse);
+                            Log.i("server says", responseData.toString());
+                            toPost1 = new JSONObject();
+                            toPost2 = new JSONObject();
+                            toPost3 = new JSONObject();
+                            toPost4 = new JSONObject();
+
+
+                            //first post data
+                            toPost1.put("batchID", batchID);
+                            toPost1.put("Quantity",quantity);
+                            Log.i("server says", responseData.getString("unhashedData"));
+                            toPost1.put("unhashedData", responseData.getString("unhashedData"));
+                            link1 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
+                                    URLEncoder.encode(toPost1.toString()) + nxtPostLinkPart4;
+
+                            //second post data
+                            toPost2.put("batchID", batchID);
+                            toPost2.put("encryptedHash1", responseData.getString("encryptedHash1"));
+                            link2 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
+                                    URLEncoder.encode(toPost2.toString()) + nxtPostLinkPart4;
+
+                            //third post data
+                            toPost3.put("batchID", batchID);
+                            toPost3.put("encryptedHash2", responseData.getString("encryptedHash2"));
+                            link3 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
+                                    URLEncoder.encode(toPost3.toString()) + nxtPostLinkPart4;
+
+                            //fourth post data
+                            toPost4.put("batchID", batchID);
+                            toPost4.put("encryptedHash3", responseData.getString("encryptedHash3"));
+                            link4 = nxtPostLinkPart1 + secretPhrase + nxtPostLinkPart2 + nxtAccNum + nxtPostLinkPart3 +
+                                    URLEncoder.encode(toPost4.toString()) + nxtPostLinkPart4;
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            // error
+                            pDialog.dismiss();
+                            if(!isNetworkAvailable()){
+                                Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(Transaction.this, R.string.error, Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
-
-                    // call the first post function
-                    firstPost(link1);
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    // error
-                    pDialog.dismiss();
-                    if(!isNetworkAvailable()){
-                        Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
-                    }else{
-                        Toast.makeText(Transaction.this, R.string.server_error, Toast.LENGTH_LONG).show();
+                        break;
                     }
                 }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("VolleyError: ", error.toString());
+                s.close();
 
-                if(errorCounter <=3){
-                    getLocalInfoFromServer();
-                    errorCounter ++;
-                }else{
-                    // error
-                    pDialog.dismiss();
-                    if(!isNetworkAvailable()){
-                        Toast.makeText(Transaction.this, R.string.lost_connection, Toast.LENGTH_LONG).show();
-                    }else{
-                        Toast.makeText(Transaction.this, R.string.server_error, Toast.LENGTH_LONG).show();
-                    }
-                }
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
-        queue.add(getRequest);
+            return "some message";
+        }
+
+        @Override
+        protected void onPostExecute(String message) {
+            // call the first post function
+            firstPost(link1);
+        }
     }
 
     //post first json object to blockchain (batchID, movement, unhashed data)
     public void firstPost(String urlString) {
         pDialog.setMessage("Sending to blockchain...");
-
+        Log.d("Url", urlString);
         postRequest = new JsonObjectRequest(Request.Method.POST, urlString, (String) null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -337,6 +432,7 @@ public class Transaction extends AppCompatActivity {
                     }
                 }
         );
+        postRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(postRequest);
     }
 
@@ -387,6 +483,7 @@ public class Transaction extends AppCompatActivity {
                     }
                 }
         );
+        postRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(postRequest);
     }
 
@@ -437,6 +534,7 @@ public class Transaction extends AppCompatActivity {
                     }
                 }
         );
+        postRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(postRequest);
     }
 
@@ -487,6 +585,7 @@ public class Transaction extends AppCompatActivity {
                     }
                 }
         );
+        postRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(postRequest);
     }
 
